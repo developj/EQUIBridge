@@ -1,0 +1,14 @@
+docker-compose run --rm backend python manage.py makemigrations
+docker-compose run --rm backend python manage.py migrate
+
+
+# when you make installation changes
+
+docker-compose build backend
+
+# if it's frontend
+
+ docker-compose build frontend
+
+docker-compose up
+
