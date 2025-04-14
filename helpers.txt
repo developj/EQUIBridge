@@ -12,3 +12,11 @@ docker-compose build backend
 
 docker-compose up
 
+
+
+# After making installation changes, in the root folder healthyplace run
+
+docker-compose down --volumes
+docker-compose up --build
+
+
