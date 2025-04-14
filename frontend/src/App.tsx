@@ -1,10 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing/Landing';
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
-import Dashboard from './pages/Dashboard/Dashboard';
-
-import "./App.css"
+import { Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing/Landing";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   return (

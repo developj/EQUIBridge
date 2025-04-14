@@ -1,13 +1,23 @@
-import { Link } from 'react-router-dom';
-import styles from './Landing.module.scss';
+import CallToAction from "../../components/CallToAction";
+import FeaturedOpportunities from "../../components/FeaturedOpportunities";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import Hero from "../../components/Hero";
+import HowItWorks from "../../components/HowItWorks";
+import ResourceHub from "../../components/ResourceHub";
+import Testimonial from "../../components/Testimonial";
 
 export default function Landing() {
   return (
-    <div className={styles.container}>
-      <h1>Welcome to the App</h1>
-      <p>
-        <Link to="/login">Login</Link> or <Link to="/register">Register</Link>
-      </p>
+    <div>
+      <Header />
+      <Hero />
+      <FeaturedOpportunities />
+      <HowItWorks />
+      <ResourceHub />
+      <CallToAction />
+      <Testimonial />
+      <Footer />
     </div>
   );
 }
