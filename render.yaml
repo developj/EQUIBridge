@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: backend
+    env: python
+    buildCommand: |
+      pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: |
+      python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+    plan: free
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: backend.settings
+      - key: SECRET_KEY
+        value: 'django-insecure-=*s3jxve=_l!o@5ia=bfa+%7)m+q_2n_mkwuzmgx4h284l+y2f'
+      - key: DEBUG
+        value: 'True'
+      - key: ALLOWED_HOSTS
+        value: '*'
+
+  - type: web
+    name: frontend
+    env: node
+    buildCommand: npm install
+    startCommand: npm run dev -- --host
+    plan: free
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    autoDeploy: true
