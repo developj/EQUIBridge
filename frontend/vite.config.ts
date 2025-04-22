@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-    allowedHosts: ['equibridge.onrender.com'],
+    allowedHosts: ['equibridge.onrender.com','equibridge-2.onrender.com'],
   },
   plugins: [react()],
 });
