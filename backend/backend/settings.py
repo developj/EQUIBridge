@@ -119,7 +119,9 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite dev server
     "https://equibridge.onrender.com",
-    "https://equibridge-2.onrender.com"
+    "https://equibridgeapi.onrender.com"
+    "equibridgeapi.onrender.com",
+    "https://equibridge-2.onrender.com",
 ]
 
 # Django REST Framework
