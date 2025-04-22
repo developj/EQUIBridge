@@ -1,36 +1,18 @@
-# FROM python:3.11
+FROM python:3.11-slim
 
-# ENV PYTHONDONTWRITEBYTECODE=1
-# ENV PYTHONUNBUFFERED=1
-
-# WORKDIR /app
-
-# COPY requirements.txt .
-# RUN pip install --upgrade pip && pip install -r requirements.txt
-
-# COPY . .
-
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-FROM python:3.11
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=backend.settings
 
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Run migrations and create admin user before starting server
-CMD ["sh", "-c", "\
-    python manage.py migrate && \
-    python manage.py shell -c \"\
-    from django.contrib.auth import get_user_model; \
-    User = get_user_model(); \
-    User.objects.filter(username='admin').exists() or \
-    User.objects.create_superuser('admin', 'admin@example.com', 'admin12345')\" && \
-    python manage.py runserver 0.0.0.0:8000"]
+# Set environment variables for superuser (you can override via docker-compose)
+ENV DJANGO_SUPERUSER_USERNAME=admin
+ENV DJANGO_SUPERUSER_EMAIL=admin@example.com
+ENV DJANGO_SUPERUSER_PASSWORD=admin123
 
+# Run migrations + create superuser + run server
+CMD ["sh", "-c", "python manage.py migrate && python create_superuser.py && python manage.py runserver 0.0.0.0:8000"]
