@@ -30,3 +30,9 @@ https://equibridge.onrender.com
 https://equibridge-2.onrender.com/admin
 
 
+#local, creating super user
+docker-compose run --rm backend python manage.py createsuperuser
+
+
+
+
