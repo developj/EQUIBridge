@@ -32,5 +32,10 @@ COPY . .
 # Expose port 8000 to match Django's default dev server port
 EXPOSE 8000
 
-# Apply migrations, then run the server
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Set environment variables for superuser (you can override via docker-compose)
+ENV DJANGO_SUPERUSER_USERNAME=admin
+ENV DJANGO_SUPERUSER_EMAIL=admin@example.com
+ENV DJANGO_SUPERUSER_PASSWORD=admin123
+
+# Run migrations + create superuser + run server
+CMD ["sh", "-c", "python manage.py migrate && python create_superuser.py && python manage.py runserver 0.0.0.0:8000"]
