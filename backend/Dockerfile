@@ -32,7 +32,5 @@ COPY . .
 # Expose port 8000 to match Django's default dev server port
 EXPOSE 8000
 
-# Bind Django dev server to 0.0.0.0 so it's accessible outside container
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-
+# Apply migrations, then run the server
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
