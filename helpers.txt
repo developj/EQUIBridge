@@ -20,3 +20,13 @@ docker-compose down --volumes
 docker-compose up --build
 
 
+#backend
+https://equibridge-2.onrender.com
+
+#frontend
+https://equibridge.onrender.com
+
+#backend admin
+https://equibridge-2.onrender.com/admin
+
+
