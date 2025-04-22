@@ -20,7 +20,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Set Django environment variable for allowed hosts (optional but safer)
-ENV DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+ENV ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,equibridgeapi.onrender.com,localhost,127.0.0.1,equibridge.onrender.com,htts://equibridge-2.onrender.com
 
 WORKDIR /app
 
