@@ -63,7 +63,6 @@ MIDDLEWARE = [
 # Custom user model
 AUTH_USER_MODEL = "api.User"
 
-
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -112,6 +111,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://equibridge-2.onrender.com",
+    "https://equibridge.onrender.com",
+    "https://equibridgeapi.onrender.com",
+     "http://localhost:5173",
 ]
 
 # CORS settings (for Vite frontend)
