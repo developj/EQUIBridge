@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const { mutate, isPending } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,10 +53,10 @@ export default function Login() {
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
                     <Input
-                      id="username"
-                      type="username"
-                      name="username"
-                      value={form.username}
+                      id="email"
+                      type="email"
+                      name="email"
+                      value={form.email}
                       placeholder=""
                       onChange={handleChange}
                       required

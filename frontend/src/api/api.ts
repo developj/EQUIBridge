@@ -24,7 +24,7 @@ export const register = (data: {
   return res.data;
 });
 
-export const login = (data: { username: string; password: string }) =>
+export const login = (data: { email: string; password: string }) =>
     API.post("/login/", data).then(res => {
       Cookies.set("token", res.data.token, { expires: 7 });
       return res.data;

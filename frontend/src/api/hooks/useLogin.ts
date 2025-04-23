@@ -6,7 +6,7 @@ export const useLogin = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: { username: string; password: string }) => login(data),
+    mutationFn: (data: { email: string; password: string }) => login(data),
     onSuccess: () => {
       navigate('/dashboard');
     },
