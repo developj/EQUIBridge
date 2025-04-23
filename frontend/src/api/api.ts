@@ -12,14 +12,16 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-export const register = (data: {
+export interface RegisterUserType {
   username: string;
   email: string;
   first_name: string;
   last_name: string;
   middle_name?: string;
   password: string;
-}) => API.post("/register/", data).then((res) => {
+}
+
+export const register = (data: RegisterUserType) => API.post("/register/", data).then((res) => {
   Cookies.set("token", res.data.token, { expires: 7 });
   return res.data;
 });

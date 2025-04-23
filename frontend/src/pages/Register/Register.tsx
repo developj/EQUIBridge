@@ -18,11 +18,12 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Separator } from "../../components/ui/separator";
 import { Checkbox } from "../../components/ui/checkbox";
+import { RegisterUserType } from "../../api/api";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<RegisterUserType>({
     username: "",
     email: "",
     first_name: "",
