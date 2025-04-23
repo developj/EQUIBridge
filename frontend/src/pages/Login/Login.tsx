@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { useLogin } from "../../api/hooks/useLogin";
 
@@ -25,8 +24,9 @@ export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const { mutate, isPending } = useLogin();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,11 +51,13 @@ export default function Login() {
               <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="username">Username</Label>
                     <Input
-                      id="email"
-                      type="email"
-                      placeholder="name@example.com"
+                      id="username"
+                      type="username"
+                      name="username"
+                      value={form.username}
+                      placeholder=""
                       onChange={handleChange}
                       required
                     />
@@ -74,7 +76,9 @@ export default function Login() {
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
+                        name="password"
                         placeholder="••••••••"
+                        value={form.password}
                         onChange={handleChange}
                         required
                       />

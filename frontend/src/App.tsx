@@ -10,10 +10,12 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      {/* protected routes */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/opportunities" element={<Dashboard />} />
 
       <Route path="/Resources" element={<Dashboard />} />
+      
     </Routes>
   );
 }
