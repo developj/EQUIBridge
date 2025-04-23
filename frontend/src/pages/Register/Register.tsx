@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { useRegister } from "../../api/hooks/useRegister";
 import { Eye, EyeOff } from "lucide-react";
@@ -34,8 +33,9 @@ export default function Register() {
 
   const { mutate, isPending } = useRegister();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +44,6 @@ export default function Register() {
   };
 
   return (
-    // <div>
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4">
@@ -67,15 +66,31 @@ export default function Register() {
                     <Input
                       id="username"
                       placeholder="Enter your  username"
+                      name="username"
+                      value={form.username}
                       onChange={handleChange}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="first_name">First Name</Label>
                     <Input
-                      id="name"
-                      placeholder="Enter your full name"
+                      id="first_name"
+                      name="first_name"
+                      value={form.first_name}
+                      placeholder="Enter your first name"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="last_name">Last Name</Label>
+                    <Input
+                      id="last_name"
+                      placeholder="Enter your last name"
+                      name="last_name"
+                      value={form.last_name}
                       onChange={handleChange}
                       required
                     />
@@ -85,6 +100,8 @@ export default function Register() {
                     <Input
                       id="email"
                       type="email"
+                      name="email"
+                      value={form.email}
                       placeholder="name@example.com"
                       onChange={handleChange}
                       required
@@ -95,7 +112,9 @@ export default function Register() {
                     <div className="relative">
                       <Input
                         id="password"
+                        name="password"
                         type={showPassword ? "text" : "password"}
+                        value={form.password}
                         placeholder="Create a strong password"
                         onChange={handleChange}
                         required
