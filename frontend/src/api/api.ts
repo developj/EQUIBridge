@@ -1,14 +1,16 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API = axios.create({
+export const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
 API.interceptors.request.use((config) => {
   const token = Cookies.get("token");
-  if (token) config.headers.Authorization = `Token ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
@@ -22,19 +24,19 @@ export interface RegisterUserType {
 }
 
 export const register = (data: RegisterUserType) => API.post("/register/", data).then((res) => {
-  Cookies.set("token", res.data.token, { expires: 7 });
+  Cookies.set("token", res.data.access, { expires: 7 });
   return res.data;
 });
 
 export const login = (data: { email: string; password: string }) =>
-    API.post("/login/", data).then(res => {
-      Cookies.set("token", res.data.token, { expires: 7 });
-      return res.data;
-    });
-  
-  export const getProfile = () => API.get("/profile/").then(res => res.data);
-  
-  export const logout = () => {
-    Cookies.remove("token");
-    window.location.href = "/";
-  };
+  API.post("/login/", data).then(res => {
+    Cookies.set("token", res.data.access, { expires: 7 });
+    return res.data;
+  });
+
+export const getProfile = () => API.get("/profile/").then(res => res.data);
+
+export const logout = () => {
+  Cookies.remove("token");
+  window.location.href = "/";
+};

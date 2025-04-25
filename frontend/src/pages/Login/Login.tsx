@@ -6,6 +6,7 @@ import { Separator } from "../../components/ui/separator";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import Header from "../../components/Header";
+import GoogleLoginButton from "../../components/GoogleLoginButton";
 import {
   Card,
   CardContent,
@@ -14,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import googlePnG from "../../assets/g-logo.png";
+// import googlePnG from "../../assets/g-logo.png";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Link } from "react-router-dom";
@@ -116,7 +117,7 @@ export default function Login() {
                   </span>
                 </div>
               </div>
-              <Button
+              {/* <Button
                 variant="outline"
                 className="text-gray-600 flex items-center justify-center cursor-pointer mx-auto"
               >
@@ -126,7 +127,8 @@ export default function Login() {
                   className="w-[20px]"
                 />
                 Google
-              </Button>
+              </Button> */}
+              <GoogleLoginButton />
             </CardContent>
             <CardFooter className="flex flex-col">
               <p className="text-sm text-center text-gray-600 mt-2">

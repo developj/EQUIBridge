@@ -23,8 +23,8 @@ def health_check(request):
     return JsonResponse({"status": "ok"})
 
 urlpatterns = [
-     path("", RedirectView.as_view(url="/admin/login/", permanent=False)),  # 👈 Redirect root to admin login
+    path("", RedirectView.as_view(url="/admin/login/", permanent=False)),  # 👈 Redirect root to admin login
     path("healthz/", health_check),
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls'))
+    path("api/", include("api.urls.auth_urls")),
 ]

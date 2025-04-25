@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useRegister } from "../../api/hooks/useRegister";
 import { Eye, EyeOff } from "lucide-react";
+import GoogleLoginButton from "../../components/GoogleLoginButton";
 import Header from "../../components/Header";
-import googlePnG from "../../assets/g-logo.png";
+// import googlePnG from "../../assets/g-logo.png";
 import {
   Card,
   CardContent,
@@ -181,7 +182,7 @@ export default function Register() {
                 </div>
               </div>
 
-              <Button
+              {/* <Button
                 variant="outline"
                 className="text-gray-600 flex items-center justify-center cursor-pointer mx-auto"
               >
@@ -191,7 +192,8 @@ export default function Register() {
                   className="w-[20px]"
                 />
                 Google
-              </Button>
+              </Button> */}
+              <GoogleLoginButton />
             </CardContent>
             <CardFooter className="flex flex-col">
               <p className="text-sm text-center text-gray-600 mt-2">

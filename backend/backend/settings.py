@@ -39,18 +39,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # 3rd-party
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 
     # Local
     "api",
 ]
 
+SITE_ID = 1
+
+# Custom user model
+AUTH_USER_MODEL = "api.User"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
 MIDDLEWARE = [
-   'corsheaders.middleware.CorsMiddleware', # Must be first
+    'corsheaders.middleware.CorsMiddleware', # Must be first
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,10 +75,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
-# Custom user model
-AUTH_USER_MODEL = "api.User"
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -118,6 +135,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://equibridge.onrender.com",
     "https://equibridgeapi.onrender.com",
      "http://localhost:5173",
+     "https://www.googleapis.com",
 ]
 
 # CORS settings (for Vite frontend)
@@ -133,7 +151,7 @@ CORS_ALLOWED_ORIGINS = [
 # Django REST Framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
+       "rest_framework_simplejwt.authentication.JWTAuthentication",
     ]
 }
 
@@ -160,3 +178,33 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_USE_JWT = True
+
+# JWT config
+from datetime import timedelta
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+
+# Google OAuth provider settings (optional, can be in admin UI too)
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+        'FETCH_USERINFO' : True,
+    }
+}
