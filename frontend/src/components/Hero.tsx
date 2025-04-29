@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -22,9 +23,11 @@ const Hero = () => {
             className="flex flex-col sm:flex-row justify-center gap-4 mb-12 animate-fade-in"
             style={{ animationDelay: "0.4s" }}
           >
-            <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white text-lg px-8  cursor-pointer">
-              Create Your Profile
-            </Button>
+            <Link to="/createprofile">
+              <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white text-lg px-8  cursor-pointer">
+                Create Your Profile
+              </Button>
+            </Link>
             <Button
               variant="outline"
               className="border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[ var(--soft-purple)] text-lg px-8 cursor-pointer "

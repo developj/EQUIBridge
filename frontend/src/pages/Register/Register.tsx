@@ -125,6 +125,9 @@ export default function Register() {
                         type="button"
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                         onClick={() => setShowPassword(!showPassword)}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
                       >
                         {showPassword ? (
                           <EyeOff size={18} />
@@ -138,12 +141,14 @@ export default function Register() {
                       letters, numbers, and symbols.
                     </p>
                   </div>
-                  <div className="flex items-center space-x-2">
+
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center space-x-2 "
+                  >
                     <Checkbox id="terms" required />
-                    <label
-                      htmlFor="terms"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
+
+                    <span>
                       I agree to the{" "}
                       <Link
                         to="/terms"
@@ -158,8 +163,9 @@ export default function Register() {
                       >
                         Privacy Policy
                       </Link>
-                    </label>
-                  </div>
+                    </span>
+                  </label>
+
                   <Button
                     type="submit"
                     className="w-full 
@@ -185,11 +191,13 @@ export default function Register() {
               {/* <Button
                 variant="outline"
                 className="text-gray-600 flex items-center justify-center cursor-pointer mx-auto"
+                aria-label="Continue with Google"
               >
                 <img
                   src={googlePnG}
                   alt="google-logo-png"
                   className="w-[20px]"
+                  aria-hidden="true"
                 />
                 Google
               </Button> */}

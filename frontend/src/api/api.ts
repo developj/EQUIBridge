@@ -23,6 +23,7 @@ export interface RegisterUserType {
   password: string;
 }
 
+<<<<<<< Updated upstream
 export const register = (data: RegisterUserType) => API.post("/register/", data).then((res) => {
   Cookies.set("token", res.data.access, { expires: 7 });
   return res.data;
@@ -35,8 +36,31 @@ export const login = (data: { email: string; password: string }) =>
   });
 
 export const getProfile = () => API.get("/profile/").then(res => res.data);
+=======
+export const register = (data: RegisterUserType) =>
+  API.post("/register/", data).then((res) => {
+    Cookies.set("token", res.data.token, { expires: 7 });
+    return res.data;
+  });
+
+export const login = (data: { email: string; password: string }) =>
+  API.post("/login/", data).then((res) => {
+    Cookies.set("token", res.data.token, { expires: 7 });
+    return res.data;
+  });
+
+export const getProfile = () => API.get("/profile/").then((res) => res.data);
+>>>>>>> Stashed changes
 
 export const logout = () => {
   Cookies.remove("token");
   window.location.href = "/";
 };
+<<<<<<< Updated upstream
+=======
+
+export interface LoginUserType {
+  email: string;
+  password: string;
+}
+>>>>>>> Stashed changes

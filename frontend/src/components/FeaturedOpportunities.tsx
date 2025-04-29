@@ -80,6 +80,19 @@ const getOpportunityIcon = (type: string) => {
 const FeaturedOpportunities = () => {
   return (
     <section className="py-16 px-4 bg-gray-50">
+      <section className="bg-gray-50 py-16 px-6">
+        <h2 className="text-2xl font-semibold text-center mb-10">
+          Why It Matters
+        </h2>
+        <div className="max-w-3xl mx-auto text-center text-lg">
+          <p>
+            Despite the abundance of programs and job boards, marginalized
+            communities struggle to find opportunities that match their
+            real-world contexts and strengths. We solve this with a smart,
+            inclusive recommendation system.
+          </p>
+        </div>
+      </section>
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Featured Opportunities</h2>
