@@ -7,10 +7,15 @@ export const API = axios.create({
 });
 
 API.interceptors.request.use((config) => {
-  const token = Cookies.get("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const isAuthRoute = config.url?.includes("/login") || config.url?.includes("/register");
+
+  if (!isAuthRoute) {
+    const token = Cookies.get("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
   }
+
   return config;
 });
 
