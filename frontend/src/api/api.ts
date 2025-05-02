@@ -34,7 +34,7 @@ export const register = (data: RegisterUserType) =>
     return res.data;
   });
 
-export const login = (data: { email: string; password: string }) =>
+export const login = (data: LoginUserType) =>
   API.post("/login/", data).then((res) => {
     Cookies.set("token", res.data.access, { expires: 7 });
     return res.data;
@@ -49,5 +49,14 @@ export const logout = () => {
 
 export interface LoginUserType {
   email: string;
+  password: string;
+}
+
+export interface UserProfile {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  middle_name?: string;
   password: string;
 }

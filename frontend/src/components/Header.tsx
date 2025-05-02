@@ -3,8 +3,11 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { SheetTrigger, Sheet, SheetContent } from "./ui/sheet";
 import { Menu } from "lucide-react";
+import { useAuth } from "../api/hooks/useAuth";
 
 const Header = () => {
+  const { user } = useAuth();
+  console.log("user", user);
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Browse Opportunities", path: "/opportunities" },
@@ -38,22 +41,35 @@ const Header = () => {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center space-x-4">
-          <Link to="/login">
+        {user ? (
+          <div className="flex ">
+            <h1>{user.first_name}</h1>
+
             <Button
               variant="outline"
               className="border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--soft-purple)] cursor-pointer"
             >
-              Log In
+              Log out
             </Button>
-          </Link>
+          </div>
+        ) : (
+          <div className="hidden md:flex items-center space-x-4">
+            <Link to="/login">
+              <Button
+                variant="outline"
+                className="border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--soft-purple)] cursor-pointer"
+              >
+                Log In
+              </Button>
+            </Link>
 
-          <Link to="/register">
-            <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white cursor-pointer">
-              Sign Up
-            </Button>
-          </Link>
-        </div>
+            <Link to="/register">
+              <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white cursor-pointer">
+                Sign Up
+              </Button>
+            </Link>
+          </div>
+        )}
 
         {/* Mobile Navigation */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
