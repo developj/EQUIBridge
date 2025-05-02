@@ -14,3 +14,5 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Helps Windows detect file changes
