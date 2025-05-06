@@ -10,9 +10,7 @@ const Header = () => {
   console.log("user", user);
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Browse Opportunities", path: "/opportunities" },
-    { name: "Resources", path: "/resources" },
-    { name: "About Us", path: "/about" },
+    { name: "Features", path: "/" },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -21,29 +19,19 @@ const Header = () => {
     <header className=" bg-white/80 backdrop-blur-md z-50 shadow-sm ">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--color-purple)] to-purple-500 flex items-center justify-center text-white font-bold text-xl">
+          <div className="w-10 h-10 rounded-lg bg-[var(--equipurple)] flex items-center justify-center text-white font-bold text-xl">
             E
           </div>
-          <span className="text-xl font-bold text-[var(--color-purple)]">
-            EQUIBridge
-          </span>
+          <span className="text-xl font-bold text-black">EQUIBridge</span>
         </Link>
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className="text-gray-700 hover:text-[var(--color-purple)] transition-colors"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
+        {/* <nav className="hidden md:flex items-center space-x-8"> */}
+
+        {/* </nav> */}
 
         {user ? (
-          <div className="flex ">
-            <h1>{user.first_name}</h1>
+          <div className="flex items-center gap-4">
+            <h1> Hi! {user.first_name}</h1>
 
             <Button
               variant="outline"
@@ -53,7 +41,16 @@ const Header = () => {
             </Button>
           </div>
         ) : (
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center  gap-3.5 space-x-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="text-gray-700 hover:text-[var(--color-purple)] transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
             <Link to="/login">
               <Button
                 variant="outline"
@@ -90,22 +87,36 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <div className="flex flex-col gap-2 mt-4">
-                <Link to="/login">
+
+              {user ? (
+                <div className="flex items-center gap-4">
+                  <h1> Hi! {user.first_name}</h1>
+
                   <Button
                     variant="outline"
-                    className="border-[var(--color-purple)] text-[var(--color-purple)]  hover:bg-[var(--soft-purple)]  w-full cursor-pointer"
+                    className="border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--soft-purple)] cursor-pointer"
                   >
-                    Log In
+                    Log out
                   </Button>
-                </Link>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2 mt-4">
+                  <Link to="/login">
+                    <Button
+                      variant="outline"
+                      className="border-[var(--color-purple)] text-[var(--color-purple)]  hover:bg-[var(--soft-purple)]  w-full cursor-pointer"
+                    >
+                      Log In
+                    </Button>
+                  </Link>
 
-                <Link to="/register">
-                  <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white w-full cursor-pointer">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
+                  <Link to="/register">
+                    <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white w-full cursor-pointer">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </nav>
           </SheetContent>
         </Sheet>

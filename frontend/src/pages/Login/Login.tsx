@@ -19,7 +19,7 @@ import {
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Link } from "react-router-dom";
-import { LoginUserType } from "../../api/api";
+import { LoginUserType } from "../../api/interface";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

@@ -14,11 +14,45 @@ import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import Footer from "../../components/Footer";
 import { Textarea } from "../../components/ui/textarea";
+import { useAuth } from "../../api/hooks/useAuth";
+// import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
 
 const CreateProfile = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
+  // const { mutate, isPending } = useUpdateProfile();
+
+  const [formData, setFormData] = useState({
+    first_name: user?.first_name || "",
+    last_name: user?.last_name || "",
+    email: user?.email || "",
+    experience: "",
+    linkedin: "",
+    bio: "",
+    interests: "",
+    preferredIndustries: "",
+    education: "",
+    employment: "",
+    income: "",
+    is_single_parent: false,
+    has_disability: "",
+    accessibilityRequirements: "",
+    opportunity_preferences: [] as string[],
+    preferred_work_format: [] as string[],
+    languages: "",
+    devices: [] as string[],
+  });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("draftSkills");
+    if (saved) setSkills(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("draftSkills", JSON.stringify(skills));
+  }, [skills]);
 
   const handleAddSkill = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && currentSkill.trim()) {
@@ -35,17 +69,22 @@ const CreateProfile = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Profile submitted", skills);
-    navigate("/opportunities");
+
+    // const payload = {
+    //   ...formData,
+    //   skills,
+    // };
+
+    // mutate(payload, {
+    //   onSuccess: () => {
+    //     localStorage.removeItem("draftSkills");
+    //     // navigate("/opportunities");
+    //   },
+    //   onError: (err) => {
+    //     console.error("Profile update failed:", err);
+    //   },
+    // });
   };
-
-  useEffect(() => {
-    const saved = localStorage.getItem("draftSkills");
-    if (saved) setSkills(JSON.parse(saved));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("draftSkills", JSON.stringify(skills));
-  }, [skills]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -71,15 +110,49 @@ const CreateProfile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" required />
+                      <Input
+                        id="firstName"
+                        required
+                        value={user?.first_name}
+                        placeholder={user?.first_name}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            first_name: e.target.value,
+                          }))
+                        }
+                      />
                     </div>
                     <div>
                       <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" required />
+                      <Input
+                        id="lastName"
+                        required
+                        value={user?.last_name}
+                        placeholder={user?.last_name}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            last_name: e.target.value,
+                          }))
+                        }
+                      />
                     </div>
                     <div>
                       <Label htmlFor="email">Email Address</Label>
-                      <Input id="email" type="email" required />
+                      <Input
+                        id="email"
+                        type="email"
+                        required
+                        value={user?.email}
+                        placeholder={user?.email}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
+                      />
                     </div>
 
                     <div>
@@ -91,6 +164,13 @@ const CreateProfile = () => {
                       <Input
                         id="linkedin"
                         placeholder="https://yourportfolio.com"
+                        value={formData.linkedin}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            linkedin: e.target.value,
+                          }))
+                        }
                       />
                     </div>
                   </div>
@@ -99,6 +179,13 @@ const CreateProfile = () => {
                     <Textarea
                       id="bio"
                       placeholder="Tell us about your background, interests, or goals"
+                      value={formData.bio}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          bio: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </section>
@@ -148,13 +235,29 @@ const CreateProfile = () => {
                   <h3 className="text-lg font-semibold">
                     Interests / Career Goals
                   </h3>
-                  <Input placeholder="e.g., Remote work, NGO work, Entrepreneurship" />
+                  <Input
+                    placeholder="e.g., Remote work, NGO work, Entrepreneurship"
+                    value={formData.interests}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        intrest: e.target.value,
+                      }))
+                    }
+                  />
                   <Label htmlFor="preferredIndustries">
                     Preferred Industries (optional)
                   </Label>
                   <Input
                     id="preferredIndustries"
                     placeholder="e.g., tech, healthcare"
+                    value={formData.preferredIndustries}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        preferredIndustries: e.target.value,
+                      }))
+                    }
                   />
                 </section>
 
@@ -199,7 +302,17 @@ const CreateProfile = () => {
                       />
                     </div>
                     <label className="flex items-center gap-2">
-                      <input type="checkbox" className="accent-purple-600" />
+                      <Input
+                        type="checkbox"
+                        className="accent-purple-600"
+                        checked={formData.is_single_parent}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            is_single_parent: e.target.checked,
+                          }))
+                        }
+                      />
                       <span>
                         I have single parent / caregiver responsibilities
                       </span>
@@ -238,17 +351,12 @@ const CreateProfile = () => {
                   </h3>
                   <Label>Types of Opportunities You're Looking For</Label>
                   <div className="grid grid-cols-2 gap-2">
-                    {["Jobs", "Scholarships", "Grants", "Mentorship"].map(
-                      (type) => (
-                        <label key={type} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="accent-purple-600"
-                          />
-                          <span>{type}</span>
-                        </label>
-                      )
-                    )}
+                    {["Jobs", "Mentorship"].map((type) => (
+                      <label key={type} className="flex items-center gap-2">
+                        <input type="checkbox" className="accent-purple-600" />
+                        <span>{type}</span>
+                      </label>
+                    ))}
                   </div>
                   <Label>Preferred Work Format</Label>
                   <div className="flex gap-4">
@@ -268,6 +376,13 @@ const CreateProfile = () => {
                   <Input
                     id="languages"
                     placeholder="e.g., English, Yoruba, Hausa"
+                    value={formData.languages}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        languages: e.target.value,
+                      }))
+                    }
                   />
                   <Label>Access to Devices</Label>
                   <div className="space-y-1">
@@ -277,7 +392,22 @@ const CreateProfile = () => {
                       "I can access a laptop or desktop computer",
                     ].map((item) => (
                       <label key={item} className="flex items-center gap-2">
-                        <input type="checkbox" className="accent-purple-600" />
+                        <input
+                          type="checkbox"
+                          checked={formData.devices.includes(
+                            "I own a smartphone"
+                          )}
+                          onChange={(e) => {
+                            const value = "I own a smartphone";
+                            setFormData((prev) => ({
+                              ...prev,
+                              devices: e.target.checked
+                                ? [...prev.devices, value]
+                                : prev.devices.filter((v) => v !== value),
+                            }));
+                          }}
+                        />
+
                         <span>{item}</span>
                       </label>
                     ))}
@@ -296,8 +426,10 @@ const CreateProfile = () => {
                   <Button
                     type="submit"
                     className="bg-equibridge-purple hover:bg-purple-600"
+                    onClick={handleSubmit}
                   >
                     Create Profile
+                    {/* {isPending ? "Creating profile..." : " Create Profile"} */}
                   </Button>
                 </div>
               </form>

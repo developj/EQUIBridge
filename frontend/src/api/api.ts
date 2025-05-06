@@ -1,5 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import {
+  ExtendedProfileData,
+  LoginUserType,
+  RegisterUserType,
+} from "./interface";
 
 export const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -7,7 +12,8 @@ export const API = axios.create({
 });
 
 API.interceptors.request.use((config) => {
-  const isAuthRoute = config.url?.includes("/login") || config.url?.includes("/register");
+  const isAuthRoute =
+    config.url?.includes("/login") || config.url?.includes("/register");
 
   if (!isAuthRoute) {
     const token = Cookies.get("token");
@@ -18,15 +24,6 @@ API.interceptors.request.use((config) => {
 
   return config;
 });
-
-export interface RegisterUserType {
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  middle_name?: string;
-  password: string;
-}
 
 export const register = (data: RegisterUserType) =>
   API.post("/register/", data).then((res) => {
@@ -42,21 +39,12 @@ export const login = (data: LoginUserType) =>
 
 export const getProfile = () => API.get("/profile/").then((res) => res.data);
 
+export const updateProfile = (data: ExtendedProfileData) =>
+  API.post("/profile/", data).then((res) => {
+    return res.data;
+  });
+
 export const logout = () => {
   Cookies.remove("token");
   window.location.href = "/";
 };
-
-export interface LoginUserType {
-  email: string;
-  password: string;
-}
-
-export interface UserProfile {
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  middle_name?: string;
-  password: string;
-}

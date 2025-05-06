@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 
 const CallToAction = () => {
   return (
-    <section className="py-16 px-4 bg-gradient-to-r from-[var(--color-purple)] to-purple-500 text-white">
+    <section className="py-16 px-4 bg-[var(--equipurple)] text-white">
       <div className="container mx-auto">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">

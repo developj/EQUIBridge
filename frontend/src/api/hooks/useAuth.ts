@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getProfile, UserProfile } from "../api";
+import { getProfile } from "../api";
+import { UserProfile } from "../interface";
 
 export const useAuth = () => {
   const [user, setUser] = useState<UserProfile | null>(null);

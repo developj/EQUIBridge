@@ -2,7 +2,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -13,6 +12,24 @@
   --soft-pink: #ffdee2;
   --gray: #8e9196;
   --dark: #1a1f2c;
+  --equiblue: #1eaedb;
+  --equipurple: #8b5cf6;
+  --equipink: #d946ef;
+  --equiorange: #f97316;
+  --equired: #ea384c;
+
+  /* Opacity variants using rgba */
+  --equipurple-10: rgba(139, 92, 246, 0.1);
+
+  --equipurple-90: rgba(139, 92, 246, 0.9);
+
+  --equipink-10: rgba(217, 70, 239, 0.1);
+  --equipink-20: rgba(217, 70, 239, 0.2);
+
+  --equiblue-10: rgba(30, 174, 219, 0.1);
+  --equiblue-20: rgba(30, 174, 219, 0.2);
+
+  --equipurple-20: rgba(139, 92, 246, 0.2);
 }
 :root {
   line-height: 1.5;
