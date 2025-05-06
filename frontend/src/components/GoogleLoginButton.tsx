@@ -16,7 +16,7 @@ export default function GoogleLoginButton() {
 
       console.log("Google Login Success!");
 
-      navigate("/profile");
+      navigate("/");
     } catch (err) {
       console.error("Login Error:", err);
     }
