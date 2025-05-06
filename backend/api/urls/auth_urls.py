@@ -1,10 +1,10 @@
 from django.urls import path
 from api.views.auth_views import RegisterView, LoginView, ProfileView
-from api.views.social_views import GoogleLogin
+from api.views.social_views import CustomGoogleLoginView
 
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("login/", LoginView.as_view(), name="login"),
     path("profile/", ProfileView.as_view(), name="profile"),
-    path("google-login/", GoogleLogin.as_view(), name="google_login"),
+    path("google-login/", CustomGoogleLoginView.as_view(), name="google_login"),
 ]
