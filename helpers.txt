@@ -24,7 +24,7 @@ docker-compose up --build
 https://equibridge-2.onrender.com
 
 #frontend
-https://equibridge.onrender.com
+https://equibridge.onrender.com or creative-cajeta-95b188.netlify.app // it is hosted on netlify for availability, then in docker on render
 
 #backend admin
 https://equibridge-2.onrender.com/admin
