@@ -4,6 +4,7 @@ import {
   ExtendedProfileData,
   LoginUserType,
   RegisterUserType,
+  JobAdzunaJobsQueryParams,
 } from "./interface";
 
 export const API = axios.create({
@@ -48,3 +49,6 @@ export const logout = () => {
   Cookies.remove("token");
   window.location.href = "/";
 };
+
+export const getAdzunaJobs = (params: JobAdzunaJobsQueryParams) =>
+  API.post("/adzuna/search/", params).then((res) => res.data);

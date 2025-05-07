@@ -42,3 +42,48 @@ export interface ExtendedProfileData {
   languages: string;
   devices: string[];
 }
+
+export interface JobAdzunaJobsQueryParams {
+  query: string;
+  location?: string;
+  results_per_page?: number;
+  page?: number;
+}
+
+export interface AdzunaCategory {
+  tag: string;
+  label: string;
+  __CLASS__?: string;
+}
+
+export interface AdzunaCompany {
+  display_name: string;
+  __CLASS__?: string;
+}
+
+export interface AdzunaLocation {
+  display_name: string;
+  area: string[];
+  __CLASS__?: string;
+}
+
+export interface AdzunaJob {
+  id: string;
+  title: string;
+  description: string;
+  redirect_url: string;
+  created: string; // ISO string
+  latitude?: number;
+  longitude?: number;
+  salary_min?: number;
+  salary_max?: number;
+  salary_is_predicted?: '0' | '1';
+  contract_time?: string;
+  adref?: string;
+  __CLASS__?: string;
+  category?: AdzunaCategory;
+  company?: AdzunaCompany;
+  location?: AdzunaLocation;
+}
+
+export type AdzunaJobResponse = AdzunaJob[];

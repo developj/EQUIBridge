@@ -16,6 +16,7 @@ import Footer from "../../components/Footer";
 import { Textarea } from "../../components/ui/textarea";
 import { useAuth } from "../../api/hooks/useAuth";
 import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
+import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
 
 const CreateProfile = () => {
   const { user } = useAuth();
@@ -61,6 +62,16 @@ const CreateProfile = () => {
       setCurrentSkill("");
     }
   };
+  const mutateAzuna =useAdzunaJobsMutation()
+
+  const sampleJobAdzunaParams = {
+    query: "frontend developer",
+    location: "usa",
+    results_per_page: 20,
+    page: 1,
+  };
+
+
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
@@ -483,6 +494,10 @@ const CreateProfile = () => {
             </CardContent>
           </Card>
         </div>
+        <Button onClick={async()=>{
+         const response = await mutateAzuna.mutateAsync(sampleJobAdzunaParams)
+         console.log(response);
+        }}>call adzuna test</Button>
       </main>
       <Footer />
     </div>
