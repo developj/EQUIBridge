@@ -15,14 +15,14 @@ import { Button } from "../../components/ui/button";
 import Footer from "../../components/Footer";
 import { Textarea } from "../../components/ui/textarea";
 import { useAuth } from "../../api/hooks/useAuth";
-// import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
+import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
 
 const CreateProfile = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
-  // const { mutate, isPending } = useUpdateProfile();
+  const { mutate, isPending } = useUpdateProfile();
 
   const [formData, setFormData] = useState({
     first_name: user?.first_name || "",
@@ -32,13 +32,13 @@ const CreateProfile = () => {
     linkedin: "",
     bio: "",
     interests: "",
-    preferredIndustries: "",
+    preferred_industries: "",
     education: "",
     employment: "",
     income: "",
     is_single_parent: false,
-    has_disability: "",
-    accessibilityRequirements: "",
+    has_disability: false,
+    accessibility_requirements: "",
     opportunity_preferences: [] as string[],
     preferred_work_format: [] as string[],
     languages: "",
@@ -70,20 +70,20 @@ const CreateProfile = () => {
     e.preventDefault();
     console.log("Profile submitted", skills);
 
-    // const payload = {
-    //   ...formData,
-    //   skills,
-    // };
+    const payload = {
+      ...formData,
+      skills,
+    };
 
-    // mutate(payload, {
-    //   onSuccess: () => {
-    //     localStorage.removeItem("draftSkills");
-    //     // navigate("/opportunities");
-    //   },
-    //   onError: (err) => {
-    //     console.error("Profile update failed:", err);
-    //   },
-    // });
+    mutate(payload, {
+      onSuccess: () => {
+        localStorage.removeItem("draftSkills");
+        navigate("/opportunities");
+      },
+      onError: (err) => {
+        console.error("Profile update failed:", err);
+      },
+    });
   };
 
   return (
@@ -157,7 +157,17 @@ const CreateProfile = () => {
 
                     <div>
                       <Label htmlFor="experience">Experience Level</Label>
-                      <Input id="experience" placeholder="e.g., Beginner" />
+                      <Input
+                        id="experience"
+                        placeholder="e.g., Beginner"
+                        value={formData.experience}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            experience: e.target.value,
+                          }))
+                        }
+                      />
                     </div>
                     <div>
                       <Label htmlFor="linkedin">LinkedIn / Portfolio</Label>
@@ -241,7 +251,7 @@ const CreateProfile = () => {
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        intrest: e.target.value,
+                        interests: e.target.value,
                       }))
                     }
                   />
@@ -251,11 +261,10 @@ const CreateProfile = () => {
                   <Input
                     id="preferredIndustries"
                     placeholder="e.g., tech, healthcare"
-                    value={formData.preferredIndustries}
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        preferredIndustries: e.target.value,
+                        preferred_industries: e.target.value,
                       }))
                     }
                   />
@@ -270,6 +279,13 @@ const CreateProfile = () => {
                       <select
                         id="education"
                         className="w-full border p-2 rounded-md"
+                        value={formData.education}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            education: e.target.value,
+                          }))
+                        }
                       >
                         <option>No formal education</option>
                         <option>Primary</option>
@@ -285,6 +301,13 @@ const CreateProfile = () => {
                       <select
                         id="employment"
                         className="w-full border p-2 rounded-md"
+                        value={formData.employment}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            employment: e.target.value,
+                          }))
+                        }
                       >
                         <option>Unemployed</option>
                         <option>Informally employed</option>
@@ -299,6 +322,14 @@ const CreateProfile = () => {
                       <Input
                         id="income"
                         placeholder="e.g., Low, Medium, High"
+                        className=""
+                        value={formData.income}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            income: e.target.value,
+                          }))
+                        }
                       />
                     </div>
                     <label className="flex items-center gap-2">
@@ -327,7 +358,16 @@ const CreateProfile = () => {
                   </h3>
                   <div>
                     <Label>Do you identify as having a disability?</Label>
-                    <select className="w-full rounded-md border border-gray-300 p-2">
+                    <select
+                      className="w-full rounded-md border border-gray-300 p-2"
+                      value={formData.has_disability ? "yes" : "no"}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          has_disability: e.target.value === "yes",
+                        }))
+                      }
+                    >
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -340,6 +380,13 @@ const CreateProfile = () => {
                     <Textarea
                       id="accessibilityRequirements"
                       placeholder="e.g., screen reader compatible"
+                      value={formData.accessibility_requirements}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          accessibility_requirements: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </section>
@@ -425,11 +472,11 @@ const CreateProfile = () => {
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-equibridge-purple hover:bg-purple-600"
+                    className="bg-[var(--equipurple)]
+                    hover:bg-purple-600 cursor-pointer"
                     onClick={handleSubmit}
                   >
-                    Create Profile
-                    {/* {isPending ? "Creating profile..." : " Create Profile"} */}
+                    {isPending ? "Creating profile..." : " Create Profile"}
                   </Button>
                 </div>
               </form>

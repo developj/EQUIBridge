@@ -4,16 +4,26 @@ import { useState } from "react";
 import { SheetTrigger, Sheet, SheetContent } from "./ui/sheet";
 import { Menu } from "lucide-react";
 import { useAuth } from "../api/hooks/useAuth";
+import { logout } from "../api/api";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Header = () => {
   const { user } = useAuth();
   console.log("user", user);
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Features", path: "/" },
-  ];
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "How It Works", path: "#", onClick: () => scrollToSection() },
+  ];
+
+  const scrollToSection = () => {
+    const section = document.getElementById("how-it-works");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <header className=" bg-white/80 backdrop-blur-md z-50 shadow-sm ">
@@ -30,16 +40,7 @@ const Header = () => {
         {/* </nav> */}
 
         {user ? (
-          <div className="flex items-center gap-4">
-            <h1> Hi! {user.first_name}</h1>
-
-            <Button
-              variant="outline"
-              className="border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--soft-purple)] cursor-pointer"
-            >
-              Log out
-            </Button>
-          </div>
+          <ProfileDropdown />
         ) : (
           <div className="hidden md:flex items-center  gap-3.5 space-x-4">
             {navItems.map((item) => (
@@ -47,6 +48,7 @@ const Header = () => {
                 key={item.name}
                 to={item.path}
                 className="text-gray-700 hover:text-[var(--color-purple)] transition-colors"
+                onClick={item.onClick}
               >
                 {item.name}
               </Link>
@@ -72,7 +74,7 @@ const Header = () => {
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="ghost" size="icon" className="cursor-pointer">
-              <Menu className="h-6 w-6 " />
+              <Menu className="h-8 w-8 " />
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[250px] sm:w-[300px] px-4">
@@ -90,11 +92,12 @@ const Header = () => {
 
               {user ? (
                 <div className="flex items-center gap-4">
-                  <h1> Hi! {user.first_name}</h1>
+                  {/* <h1> Hi! {user.first_name}</h1> */}
 
                   <Button
                     variant="outline"
                     className="border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--soft-purple)] cursor-pointer"
+                    onClick={logout}
                   >
                     Log out
                   </Button>
