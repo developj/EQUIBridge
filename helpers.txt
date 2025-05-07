@@ -26,6 +26,8 @@ https://equibridge-2.onrender.com
 #frontend
 https://equibridge.onrender.com or creative-cajeta-95b188.netlify.app // it is hosted on netlify for availability, then in docker on render
 
+https://equi-bridge.vercel.app #vercel route
+
 #backend admin
 https://equibridge-2.onrender.com/admin
 
