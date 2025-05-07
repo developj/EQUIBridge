@@ -37,6 +37,12 @@ admin123
 #local, creating super user
 docker-compose run --rm backend python manage.py createsuperuser
 
+#build only backend
+docker-compose build backend
+
+#build only frontend
+docker-compose build frontend
+
 
 
 
