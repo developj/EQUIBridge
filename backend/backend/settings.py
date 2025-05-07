@@ -134,8 +134,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://equibridge-2.onrender.com",
     "https://equibridge.onrender.com",
     "https://equibridgeapi.onrender.com",
-     "http://localhost:5173",
-     "https://www.googleapis.com",
+    "http://localhost:5173",
+    "https://www.googleapis.com",
+    "https://equi-bridge.vercel.app",
+    "https://creative-cajeta-95b188.netlify.app",
 ]
 
 # CORS settings (for Vite frontend)
@@ -147,7 +149,7 @@ CORS_ALLOWED_ORIGINS = [
     "equibridgeapi.onrender.com",
     "https://equibridge-2.onrender.com",
     "https://equi-bridge.vercel.app",
-    "equi-bridge.vercel.app",
+    "https://creative-cajeta-95b188.netlify.app",
 ]
 
 # Django REST Framework
