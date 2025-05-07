@@ -146,6 +146,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://equibridgeapi.onrender.com"
     "equibridgeapi.onrender.com",
     "https://equibridge-2.onrender.com",
+    "https://equi-bridge.vercel.app",
+    "equi-bridge.vercel.app",
 ]
 
 # Django REST Framework
@@ -184,8 +186,8 @@ REST_USE_JWT = True
 # JWT config
 from datetime import timedelta
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=7),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "ALGORITHM": "HS256",
