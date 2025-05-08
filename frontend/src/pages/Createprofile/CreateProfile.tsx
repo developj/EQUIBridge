@@ -58,6 +58,7 @@ const CreateProfile = () => {
   const handleAddSkill = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && currentSkill.trim()) {
       e.preventDefault();
+
       setSkills([...skills, currentSkill.trim()]);
       setCurrentSkill("");
     }
@@ -118,7 +119,9 @@ const CreateProfile = () => {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName">First Name</Label>
+                      <Label htmlFor="firstName" className="pb-2">
+                        First Name
+                      </Label>
                       <Input
                         id="firstName"
                         required
@@ -133,7 +136,9 @@ const CreateProfile = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="lastName" className="pb-2">
+                        Last Name
+                      </Label>
                       <Input
                         id="lastName"
                         required
@@ -148,7 +153,9 @@ const CreateProfile = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="email">Email Address</Label>
+                      <Label htmlFor="email" className="pb-2">
+                        Email Address
+                      </Label>
                       <Input
                         id="email"
                         type="email"
@@ -165,7 +172,9 @@ const CreateProfile = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="experience">Experience Level</Label>
+                      <Label htmlFor="experience" className="pb-2">
+                        Experience Level
+                      </Label>
                       <Input
                         id="experience"
                         placeholder="e.g., Beginner"
@@ -179,7 +188,9 @@ const CreateProfile = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="linkedin">LinkedIn / Portfolio</Label>
+                      <Label htmlFor="linkedin" className="pb-2">
+                        LinkedIn / Portfolio
+                      </Label>
                       <Input
                         id="linkedin"
                         placeholder="https://yourportfolio.com"
@@ -194,7 +205,9 @@ const CreateProfile = () => {
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="bio">Bio</Label>
+                    <Label htmlFor="bio" className="pb-2">
+                      Bio
+                    </Label>
                     <Textarea
                       id="bio"
                       placeholder="Tell us about your background, interests, or goals"
@@ -212,14 +225,14 @@ const CreateProfile = () => {
                 {/* Skills */}
                 <section className="space-y-4">
                   <h3 className="text-lg font-semibold">Skills</h3>
-                  <Label>Add skills (press Enter to add)</Label>
+                  <Label className="">Add skills (press Enter to add)</Label>
                   <Input
                     value={currentSkill}
                     onChange={(e) => setCurrentSkill(e.target.value)}
                     onKeyDown={handleAddSkill}
                     placeholder="e.g., Cooking, Sales"
                   />
-                  <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="flex flex-wrap gap-2 ">
                     {skills.map((skill, index) => (
                       <Badge
                         key={index}
@@ -232,7 +245,7 @@ const CreateProfile = () => {
                     ))}
                   </div>
                   <Label>Or select soft skills:</Label>
-                  <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="flex flex-wrap gap-2 ">
                     {["Teamwork", "Empathy", "Adaptability"].map((skill) => (
                       <Badge
                         key={skill}
@@ -251,7 +264,7 @@ const CreateProfile = () => {
 
                 {/* Interests / Career Goals */}
                 <section className="space-y-4">
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-semibold ">
                     Interests / Career Goals
                   </h3>
                   <Input
@@ -284,7 +297,9 @@ const CreateProfile = () => {
                   <h3 className="text-lg font-semibold">Background Context</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="education">Level of Education</Label>
+                      <Label htmlFor="education" className="pb-2">
+                        Level of Education
+                      </Label>
                       <select
                         id="education"
                         className="w-full border p-2 rounded-md"
@@ -304,7 +319,7 @@ const CreateProfile = () => {
                       </select>
                     </div>
                     <div>
-                      <Label htmlFor="employment">
+                      <Label htmlFor="employment" className="pb-2">
                         Current Employment Status
                       </Label>
                       <select
@@ -324,39 +339,6 @@ const CreateProfile = () => {
                         <option>Full-time</option>
                       </select>
                     </div>
-                    <div>
-                      <Label htmlFor="income">
-                        Household Income Range (optional)
-                      </Label>
-                      <Input
-                        id="income"
-                        placeholder="e.g., Low, Medium, High"
-                        className=""
-                        value={formData.income}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            income: e.target.value,
-                          }))
-                        }
-                      />
-                    </div>
-                    <label className="flex items-center gap-2">
-                      <Input
-                        type="checkbox"
-                        className="accent-purple-600"
-                        checked={formData.is_single_parent}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            is_single_parent: e.target.checked,
-                          }))
-                        }
-                      />
-                      <span>
-                        I have single parent / caregiver responsibilities
-                      </span>
-                    </label>
                   </div>
                 </section>
 
@@ -366,7 +348,9 @@ const CreateProfile = () => {
                     Accessibility & Disability
                   </h3>
                   <div>
-                    <Label>Do you identify as having a disability?</Label>
+                    <Label className="pb-2">
+                      Do you identify as having a disability?
+                    </Label>
                     <select
                       className="w-full rounded-md border border-gray-300 p-2"
                       value={formData.has_disability ? "yes" : "no"}
@@ -383,7 +367,7 @@ const CreateProfile = () => {
                     </select>
                   </div>
                   <div>
-                    <Label htmlFor="accessibilityRequirements">
+                    <Label htmlFor="accessibilityRequirements" className="pb-2">
                       Accessibility Requirements (optional)
                     </Label>
                     <Textarea
@@ -397,31 +381,6 @@ const CreateProfile = () => {
                         }))
                       }
                     />
-                  </div>
-                </section>
-
-                {/* Opportunity Preferences */}
-                <section className="space-y-4">
-                  <h3 className="text-lg font-semibold">
-                    Opportunity Preferences
-                  </h3>
-                  <Label>Types of Opportunities You're Looking For</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {["Jobs", "Mentorship"].map((type) => (
-                      <label key={type} className="flex items-center gap-2">
-                        <input type="checkbox" className="accent-purple-600" />
-                        <span>{type}</span>
-                      </label>
-                    ))}
-                  </div>
-                  <Label>Preferred Work Format</Label>
-                  <div className="flex gap-4">
-                    {["Remote", "On-site", "Hybrid"].map((type) => (
-                      <label key={type} className="flex items-center gap-2">
-                        <input type="checkbox" className="accent-purple-600" />
-                        <span>{type}</span>
-                      </label>
-                    ))}
                   </div>
                 </section>
 
