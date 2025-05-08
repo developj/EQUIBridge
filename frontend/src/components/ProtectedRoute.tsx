@@ -4,8 +4,9 @@ import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { user } = useAuth();
-  if (user === null) {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) {
     toast.error("Unauthorized", {
       description: "Please login or register to access this page",
     });
