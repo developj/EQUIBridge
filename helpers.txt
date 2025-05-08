@@ -41,7 +41,7 @@ docker-compose run --rm backend python manage.py createsuperuser
 docker-compose build backend
 
 #build only frontend
-docker-compose build frontend
+docker-compose build frontend #whenever installations is made to the frontend and you want to build just frontend
 
 
 
