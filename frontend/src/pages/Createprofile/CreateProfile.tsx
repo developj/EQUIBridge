@@ -62,16 +62,14 @@ const CreateProfile = () => {
       setCurrentSkill("");
     }
   };
-  const mutateAzuna =useAdzunaJobsMutation()
+  const mutateAzuna = useAdzunaJobsMutation();
 
   const sampleJobAdzunaParams = {
-    query: "frontend developer",
+    query: "health worker",
     location: "usa",
-    results_per_page: 20,
+    results_per_page: 50,
     page: 1,
   };
-
-
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
@@ -494,10 +492,16 @@ const CreateProfile = () => {
             </CardContent>
           </Card>
         </div>
-        <Button onClick={async()=>{
-         const response = await mutateAzuna.mutateAsync(sampleJobAdzunaParams)
-         console.log(response);
-        }}>call adzuna test</Button>
+        <Button
+          onClick={async () => {
+            const response = await mutateAzuna.mutateAsync(
+              sampleJobAdzunaParams
+            );
+            console.log(response);
+          }}
+        >
+          call adzuna test
+        </Button>
       </main>
       <Footer />
     </div>

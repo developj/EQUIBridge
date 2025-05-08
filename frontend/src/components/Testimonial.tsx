@@ -1,4 +1,4 @@
-// import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Card, CardContent, CardFooter } from "./ui/card";
 
 const testimonials = [
@@ -58,9 +58,9 @@ const Testimonial = () => {
                 <p className="text-gray-600 italic">{testimonial.quote}</p>
               </CardContent>
               <CardFooter className="flex items-center border-t border-gray-100 pt-4">
-                {/* <Avatar className="h-10 w-10 mr-3 bg-equibridge-soft-purple text-equibridge-purple">
+                <Avatar className="h-10 w-10 mr-3 bg-equibridge-soft-purple text-equibridge-purple">
                   <AvatarFallback>{testimonial.avatar}</AvatarFallback>
-                </Avatar> */}
+                </Avatar>
                 <div>
                   <p className="font-semibold">{testimonial.name}</p>
                   <p className="text-sm text-gray-500">{testimonial.role}</p>

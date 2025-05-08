@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GoogleLogin } from "@react-oauth/google";
 import { API } from "../api/api";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ export default function GoogleLoginButton() {
       const res = await API.post("/google-login/", {
         access_token: credentialResponse.credential, // Sending ID token as auth_token
       });
-      console.log(res.data)
+      console.log(res.data);
       Cookies.set("token", res.data.access, { expires: 7 });
 
       console.log("Google Login Success!");
@@ -26,10 +27,5 @@ export default function GoogleLoginButton() {
     console.error("Google Login Failed");
   };
 
-  return (
-    <GoogleLogin
-      onSuccess={handleSuccess}
-      onError={handleError}
-    />
-  );
+  return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
 }

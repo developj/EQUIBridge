@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import CreateProfile from "./pages/Createprofile/CreateProfile";
 import Opportunity from "./pages/opportunity/Opportunity";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -13,8 +14,22 @@ function App() {
       <Route path="/register" element={<Register />} />
 
       {/* protected routes */}
-      <Route path="/createprofile" element={<CreateProfile />} />
-      <Route path="/opportunities" element={<Opportunity />} />
+      <Route
+        path="/createprofile"
+        element={
+          <ProtectedRoute>
+            <CreateProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/opportunities"
+        element={
+          <ProtectedRoute>
+            <Opportunity />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

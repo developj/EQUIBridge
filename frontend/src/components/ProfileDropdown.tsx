@@ -19,7 +19,7 @@ export default function ProfileDropdown() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
         <div className="flex items-center gap-2">
           <div className="rounded-full w-[40px] h-[40px] bg-[var(--equipurple)] flex items-center justify-center">
             {" "}

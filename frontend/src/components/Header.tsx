@@ -6,17 +6,13 @@ import { Menu } from "lucide-react";
 import { useAuth } from "../api/hooks/useAuth";
 import { logout } from "../api/api";
 import ProfileDropdown from "./ProfileDropdown";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 const Header = () => {
   const { user } = useAuth();
   console.log("user", user);
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "How It Works", path: "#", onClick: () => scrollToSection() },
-  ];
 
   const scrollToSection = () => {
     const section = document.getElementById("how-it-works");
@@ -35,24 +31,46 @@ const Header = () => {
           <span className="text-xl font-bold text-black">EQUIBridge</span>
         </Link>
         {/* Desktop Navigation */}
-        {/* <nav className="hidden md:flex items-center space-x-8"> */}
-
-        {/* </nav> */}
 
         {user ? (
-          <ProfileDropdown />
-        ) : (
-          <div className="hidden md:flex items-center  gap-3.5 space-x-4">
-            {navItems.map((item) => (
+          <nav
+            aria-label="Main desktop navigation"
+            className="hidden md:flex items-center gap-4"
+          >
+            <div className="hidden md:flex items-center gap-3 ">
               <Link
-                key={item.name}
-                to={item.path}
-                className="text-gray-700 hover:text-[var(--color-purple)] transition-colors"
-                onClick={item.onClick}
+                to="/"
+                className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
               >
-                {item.name}
+                Home
               </Link>
-            ))}
+              <button
+                onClick={scrollToSection}
+                className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+              >
+                How It Works
+              </button>
+            </div>
+            <ProfileDropdown />{" "}
+          </nav>
+        ) : (
+          <nav
+            aria-label="Main desktop navigation"
+            className="hidden md:flex items-center  gap-3.5 space-x-4"
+          >
+            <Link
+              to="/"
+              className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+            >
+              Home
+            </Link>
+            <button
+              onClick={scrollToSection}
+              className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+            >
+              How It Works
+            </button>
+
             <Link to="/login">
               <Button
                 variant="outline"
@@ -67,7 +85,7 @@ const Header = () => {
                 Sign Up
               </Button>
             </Link>
-          </div>
+          </nav>
         )}
 
         {/* Mobile Navigation */}
@@ -78,21 +96,41 @@ const Header = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[250px] sm:w-[300px] px-4">
-            <nav className="flex flex-col gap-4 mt-16 ">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className="text-lg font-medium px-2 py-2 rounded-md hover:bg-[var(--soft-purple)] transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
+            <DialogTitle className="sr-only">Navigation Menu</DialogTitle>
+            <DialogDescription className="sr-only">
+              Use this menu to navigate the site or access your profile.
+            </DialogDescription>
+
+            <nav
+              aria-label="Main mobile navigation"
+              className="flex flex-col gap-4 mt-16 "
+            >
+              <Link
+                to="/"
+                className="text-lg font-medium px-2 py-2 rounded-md hover:bg-[var(--soft-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+              >
+                Home
+              </Link>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection();
+                }}
+                className="text-left text-lg font-medium px-2 py-2 rounded-md hover:bg-[var(--soft-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+              >
+                How It Works
+              </button>
 
               {user ? (
-                <div className="flex items-center gap-4">
+                <div className="flex  flex-col gap-4 px-2">
                   {/* <h1> Hi! {user.first_name}</h1> */}
+
+                  <Link
+                    to="/createprofile"
+                    className="cursor-pointer text-lg font-medium  rounded-md hover:bg-[var(--soft-purple)] transition-colors"
+                  >
+                    Edit Profile
+                  </Link>
 
                   <Button
                     variant="outline"
@@ -107,14 +145,14 @@ const Header = () => {
                   <Link to="/login">
                     <Button
                       variant="outline"
-                      className="border-[var(--color-purple)] text-[var(--color-purple)]  hover:bg-[var(--soft-purple)]  w-full cursor-pointer"
+                      className="border-[var(--color-purple)] text-[var(--color-purple)]  hover:bg-[var(--soft-purple)]  w-full cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
                     >
                       Log In
                     </Button>
                   </Link>
 
                   <Link to="/register">
-                    <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white w-full cursor-pointer">
+                    <Button className="bg-[var(--color-purple)] hover:bg-purple-600 text-white w-full cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]">
                       Sign Up
                     </Button>
                   </Link>
