@@ -46,6 +46,6 @@ docker-compose build frontend #whenever installations is made to the frontend an
 #test build
 
 # to remove all images
-docker-compose down --volumes --rmi all
+docker-compose down --volumes --rmi all #to remove volumes and images
 
 
