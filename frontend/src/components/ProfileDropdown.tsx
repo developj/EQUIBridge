@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../api/hooks/useAuth";
 import { logout } from "../api/api";
 import {
   DropdownMenu,
