@@ -22,7 +22,10 @@ const Hero = () => {
               mentorships tailored to your unique skills and needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link to={"/createprofile"}>
+              <Link
+                to={"/createprofile"}
+                aria-label="Create your profile to get started"
+              >
                 <Button className="bg-[var(--equipurple)] hover:bg-[var(--equipurple-90)] text-white px-6 py-6 text-lg cursor-pointer w-full">
                   Get Started
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -31,6 +34,11 @@ const Hero = () => {
               <Button
                 variant="outline"
                 className="border-[var(--equipurple)] text-[var(--equipurple)] hover:bg-[var(--equipurple-20)] py-6 text-lg cursor-pointer"
+                onClick={() => {
+                  const el = document.getElementById("how-it-works");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                aria-label="Learn how EquiBridge works"
               >
                 Learn More
               </Button>

@@ -152,7 +152,11 @@ const CreateProfile = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-6"
+                aria-label="Create your profile"
+              >
                 <div className="flex justify-end">
                   <Button
                     disabled={!user?.bio}
@@ -175,6 +179,8 @@ const CreateProfile = () => {
                       </Label>
                       <Input
                         id="firstName"
+                        name="first_name"
+                        aria-label="First name"
                         required
                         value={formData?.first_name}
                         placeholder={user?.first_name}
@@ -192,6 +198,8 @@ const CreateProfile = () => {
                       </Label>
                       <Input
                         id="lastName"
+                        name="last_name"
+                        aria-label="Last name"
                         required
                         value={formData?.last_name}
                         placeholder={user?.last_name}
@@ -210,6 +218,8 @@ const CreateProfile = () => {
                       <Input
                         id="email"
                         type="email"
+                        name="email"
+                        aria-label="Email address"
                         disabled
                         required
                         value={user?.email}
@@ -229,6 +239,8 @@ const CreateProfile = () => {
                       </Label>
                       <Input
                         id="experience"
+                        name="experience"
+                        aria-label="Experience level"
                         placeholder="e.g., Beginner"
                         value={formData.experience}
                         onChange={(e) =>
@@ -246,6 +258,8 @@ const CreateProfile = () => {
                       <Input
                         id="linkedin"
                         placeholder="https://yourportfolio.com"
+                        name="linkedin"
+                        aria-label="LinkedIn or Portfolio"
                         value={formData.linkedin}
                         onChange={(e) =>
                           setFormData((prev) => ({
@@ -262,6 +276,9 @@ const CreateProfile = () => {
                     </Label>
                     <Textarea
                       id="bio"
+                      name="bio"
+                      aria-label="Your biography"
+                      aria-describedby="bio-description"
                       required
                       placeholder="Tell us about your background, interests, or goals"
                       value={formData.bio}
@@ -275,6 +292,7 @@ const CreateProfile = () => {
                     />
                     <div className="flex justify-end">
                       <Button
+                        aria-label="Refine your biography using AI"
                         disabled={isGeneratingBio}
                         size={"sm"}
                         onClick={(e) => {
@@ -306,6 +324,8 @@ const CreateProfile = () => {
                         variant="secondary"
                         className="cursor-pointer"
                         onClick={() => removeSkill(skill)}
+                        aria-label={`Remove skill ${skill}`}
+                        role="button"
                       >
                         {skill} ×
                       </Badge>
@@ -336,6 +356,8 @@ const CreateProfile = () => {
                   </h3>
                   <Textarea
                     className="min-h-16"
+                    name="interests"
+                    aria-label="Career interests or goals"
                     placeholder="e.g., Remote work, NGO work, Entrepreneurship"
                     value={formData.interests}
                     onChange={(e) =>
@@ -347,6 +369,7 @@ const CreateProfile = () => {
                   />
                   <div className="flex justify-end">
                     <Button
+                      aria-label="Refine career goals using AI"
                       disabled={isGeneratingCareers}
                       onClick={(e) => {
                         e.preventDefault();
@@ -386,6 +409,8 @@ const CreateProfile = () => {
                       <select
                         id="education"
                         className="w-full border p-2 rounded-md"
+                        name="education"
+                        aria-label="Level of education"
                         value={formData.education}
                         onChange={(e) =>
                           setFormData((prev) => ({
@@ -443,6 +468,8 @@ const CreateProfile = () => {
                           has_disability: e.target.value === "yes",
                         }))
                       }
+                      name="has_disability"
+                      aria-label="Disability status"
                     >
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
@@ -494,6 +521,7 @@ const CreateProfile = () => {
                         <input
                           type="checkbox"
                           className="cursor-pointer"
+                          aria-label={item}
                           onChange={(e) => {
                             setFormData((prev) => ({
                               ...prev,

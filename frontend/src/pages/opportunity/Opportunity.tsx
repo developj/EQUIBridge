@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Search } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { Input } from "../../components/ui/input";
@@ -15,14 +15,17 @@ import {
 import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
 import { useEffect, useState } from "react";
 import { AdzunaJob } from "../../api/interface";
+import { useAuth } from "../../api/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Opportunity = () => {
+  const { user } = useAuth();
   const [opportunities, setOpportunities] = useState<AdzunaJob[]>([]);
   const [page, setPage] = useState<number>(1);
-
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("health worker");
   const mutateAzuna = useAdzunaJobsMutation();
-
+  const navigate = useNavigate();
   const sampleJobAdzunaParams = {
     query: searchQuery,
     location: "usa",
@@ -44,7 +47,7 @@ const Opportunity = () => {
 
   useEffect(() => {
     handleFetchJobs();
-    // fetch jobs on mount
+    // fetch jobs on page load
   }, [page]);
 
   const handleSearch = () => {
@@ -52,11 +55,23 @@ const Opportunity = () => {
     handleFetchJobs();
   };
 
+  const navigateToBack = () => {
+    navigate("/");
+  };
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 bg-gray-50">
         <div className="container mx-auto px-4 py-8">
+          <Button
+            onClick={navigateToBack}
+            variant="outline"
+            className="cursor-pointer"
+          >
+            {" "}
+            <ArrowLeft />
+            back
+          </Button>
           <div className="mb-8 pt-20">
             <h1 className="text-3xl font-bold mb-2">Browse Opportunities</h1>
             <p className="text-gray-600">
@@ -85,47 +100,133 @@ const Opportunity = () => {
                 Find My Match
               </Button>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {opportunities.map((opportunity) => (
-              <Card
-                key={opportunity.id}
-                className="card-hover overflow-hidden border border-gray-200"
-              >
-                <CardHeader className="pb-2">
-                  <CardTitle className="mt-2 text-xl">
-                    {opportunity.title}
-                  </CardTitle>
-                  <CardDescription className="flex items-center">
-                    {opportunity.company?.display_name || "Unknown"} •{" "}
-                    {opportunity.location?.display_name || "N/A"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-sm line-clamp-3">
-                    {opportunity.description}
-                  </p>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <a
-                    href={opportunity.redirect_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+            <div className="flex flex-wrap gap-4 pt-4">
+              {["Remote", "Disability-Friendly", "Flexible"].map((tag) => (
+                <label key={tag} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedTags.includes(tag)}
+                    onChange={() => {
+                      setSelectedTags((prev) =>
+                        prev.includes(tag)
+                          ? prev.filter((t) => t !== tag)
+                          : [...prev, tag]
+                      );
+                    }}
                     className="cursor-pointer"
-                  >
-                    <Button
-                      variant="outline"
-                      className="border-[var(--equipurple)]  text-[var(--equipurple)] hover:bg-[var(--soft-purple)] cursor-pointer"
-                    >
-                      View Details
-                    </Button>
-                  </a>
-                </CardFooter>
-              </Card>
-            ))}
+                  />
+                  <span>{tag}</span>
+                </label>
+              ))}
+            </div>
           </div>
+        </div>
+        <div className="px-12 py-6">
+          {" "}
+          <p className="pb-6 ">
+            {`Hi ${user?.first_name} 👋 Based on your interests in  ${user?.interests} here
+              are some roles we found just for you.`}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {opportunities.map((opportunity) => {
+              // Match Score Logic
+              let score = 50;
+              user?.skills?.forEach((skill) => {
+                if (
+                  opportunity.title?.toLowerCase().includes(skill.toLowerCase())
+                )
+                  score += 30;
+              });
+              if (
+                opportunity.title
+                  ?.toLowerCase()
+                  .includes((user?.preferred_industries || "").toLowerCase())
+              )
+                score += 20;
+              if (
+                opportunity.description
+                  ?.toLowerCase()
+                  .includes((user?.interests || "").toLowerCase())
+              )
+                score += 20;
+              score = Math.min(score, 100);
 
+              // Inclusive Tags
+              const tags: string[] = [];
+              if (opportunity.title?.toLowerCase().includes("remote"))
+                tags.push("Remote");
+              if (opportunity.description?.toLowerCase().includes("flexible"))
+                tags.push("Flexible");
+              if (opportunity.description?.toLowerCase().includes("inclusive"))
+                tags.push("Disability-Friendly");
+
+              // Filter based on selected tags
+              if (
+                selectedTags.length > 0 &&
+                !selectedTags.every((t) => tags.includes(t))
+              )
+                return null;
+
+              return (
+                <Card
+                  key={opportunity.id}
+                  className="card-hover overflow-hidden border border-gray-200 "
+                >
+                  <CardHeader className="pb-2">
+                    <CardTitle className="mt-2 text-xl">
+                      {opportunity.title}
+                    </CardTitle>
+                    <CardDescription className="flex items-center">
+                      {opportunity.company?.display_name || "Unknown"} •{" "}
+                      {opportunity.location?.display_name || "N/A"}
+                    </CardDescription>
+
+                    <div className="flex gap-2 flex-wrap mt-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      <span
+                        className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                          score >= 80
+                            ? "bg-green-100 text-green-700"
+                            : score >= 60
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        Match: {score}%
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 text-sm line-clamp-3">
+                      {opportunity.description}
+                    </p>
+                  </CardContent>
+                  <CardFooter className="flex justify-between">
+                    <a
+                      href={opportunity.redirect_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer"
+                    >
+                      <Button
+                        variant="outline"
+                        className="border-[var(--equipurple)] text-[var(--equipurple)] hover:bg-[var(--soft-purple)] cursor-pointer"
+                      >
+                        View Details
+                      </Button>
+                    </a>
+                  </CardFooter>
+                </Card>
+              );
+            })}
+          </div>
           {/* Pagination Controls */}
           <div className="flex justify-center gap-4 mt-10">
             <Button

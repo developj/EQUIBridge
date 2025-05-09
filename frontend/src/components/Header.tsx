@@ -9,7 +9,7 @@ import { useProfile } from "../api/hooks/useProfile";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 const Header = () => {
-  const { data:user } =useProfile();
+  const { data: user } = useProfile();
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -43,6 +43,13 @@ const Header = () => {
               >
                 Home
               </Link>
+
+              <Link
+                to="/opportunities"
+                className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+              >
+                Opportunites
+              </Link>
               <button
                 onClick={scrollToSection}
                 className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
@@ -55,7 +62,7 @@ const Header = () => {
         ) : (
           <nav
             aria-label="Main desktop navigation"
-            className="hidden md:flex items-center  gap-3.5 space-x-4"
+            className="hidden md:flex items-center  gap-6 space-x-4"
           >
             <Link
               to="/"
@@ -69,6 +76,12 @@ const Header = () => {
             >
               How It Works
             </button>
+            <Link
+              to="/opportunities"
+              className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+            >
+              Opportunites
+            </Link>
 
             <Link to="/login">
               <Button
@@ -90,7 +103,12 @@ const Header = () => {
         {/* Mobile Navigation */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon" className="cursor-pointer">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="cursor-pointer"
+              aria-label="Open menu"
+            >
               <Menu className="h-8 w-8 " />
             </Button>
           </SheetTrigger>
@@ -109,6 +127,12 @@ const Header = () => {
                 className="text-lg font-medium px-2 py-2 rounded-md hover:bg-[var(--soft-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
               >
                 Home
+              </Link>
+              <Link
+                to="/opportunities"
+                className="text-gray-700 hover:text-[var(--color-purple)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-purple)]"
+              >
+                Opportunites
               </Link>
               <button
                 onClick={() => {
