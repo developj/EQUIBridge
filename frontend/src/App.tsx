@@ -5,12 +5,8 @@ import Register from "./pages/Register/Register";
 import CreateProfile from "./pages/Createprofile/CreateProfile";
 import Opportunity from "./pages/opportunity/Opportunity";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useAuth } from "./api/hooks/useAuth";
 
 function App() {
-  const { loading } = useAuth();
-
-  if (loading) return <div>Loading...</div>;
 
   return (
     <Routes>
