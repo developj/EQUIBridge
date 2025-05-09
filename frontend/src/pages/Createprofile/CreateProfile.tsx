@@ -28,6 +28,8 @@ const CreateProfile = () => {
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
   const { mutate, isPending } = useUpdateProfile();
+  const [isGeneratingBio, setIsGeneratingBio] = useState(false);
+  const [isGeneratingCareers, setIsGeneratingCareers] = useState(false);
   const mutateChat = useChat();
 
   const [formData, setFormData] = useState<ExtendedProfileData>({
@@ -113,8 +115,10 @@ const CreateProfile = () => {
   };
 
   const onRefineBio =async () => {
+  setIsGeneratingBio(true);
    await mutate(payload); //update profile
    const response =  await mutateChat.mutateAsync({ message: boiPrompt(formData.bio) });
+   setIsGeneratingBio(false)
    setFormData((prev) => ({
     ...prev,
     bio: response.reply,
@@ -123,7 +127,9 @@ const CreateProfile = () => {
 
   const onRefineCareer =async () => {
     await mutate(payload); //update profile
+    setIsGeneratingCareers(true);
     const response =  await mutateChat.mutateAsync({ message: boiPrompt(formData.interests) });
+    setIsGeneratingCareers(false);
     setFormData((prev) => ({
      ...prev,
      interests: response.reply,
@@ -257,7 +263,7 @@ const CreateProfile = () => {
                     />
                     <div className="flex justify-end">
                       <Button
-                        disabled={mutateChat.isPending}
+                        disabled={isGeneratingBio}
                         size={"sm"}
                         onClick={(e) => {
                           e.preventDefault();
@@ -329,7 +335,7 @@ const CreateProfile = () => {
                   />
                   <div className="flex justify-end">
                     <Button
-                      disabled={mutateChat.isPending}
+                      disabled={isGeneratingCareers}
                       onClick={(e) => {
                         e.preventDefault();
                         onRefineCareer();
@@ -539,7 +545,7 @@ export default CreateProfile;
 
 export const boiPrompt = (text?:string)=>{
   if(!text){
-    return "write a 200 words bio for me you can choose any profession of chioce, let your response be only what I can use directly without edits"
+    return "write a 150 words bio for me you can choose any profession of chioce, let your response be only what I can use directly without edits"
   }
 
   return `Please help me refine this for my bio: ${text}, let your response be only what I can use directly, around 200 words`
