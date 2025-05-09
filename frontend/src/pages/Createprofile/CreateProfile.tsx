@@ -151,6 +151,16 @@ const CreateProfile = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="flex justify-center">
+                <Button
+                    disabled={!user?.bio}
+                    onClick={() => navigate("/opportunities")}
+                    className="bg-[var(--equipurple)]
+                    hover:bg-purple-600 cursor-pointer"
+                  >
+                    Explore Opportunities
+                  </Button>
+                </div>
                 {/* Personal Information */}
                 <section className="space-y-4">
                   <h3 className="text-lg font-semibold">
