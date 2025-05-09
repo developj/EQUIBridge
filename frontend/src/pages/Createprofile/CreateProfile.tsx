@@ -23,7 +23,7 @@ import { ExtendedProfileData } from "../../api/interface";
 
 const CreateProfile = () => {
   const { data: user, isLoading, isError } = useProfile();
-  console.log(isLoading,isError);
+  console.log(isLoading, isError);
   const navigate = useNavigate();
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
@@ -33,7 +33,7 @@ const CreateProfile = () => {
   const mutateChat = useChat();
 
   const [formData, setFormData] = useState<ExtendedProfileData>({
-    first_name:  "",
+    first_name: "",
     last_name: "",
     email: "",
     experience: "",
@@ -70,15 +70,15 @@ const CreateProfile = () => {
       setCurrentSkill("");
     }
   };
-  
+
   // const mutateAzuna = useAdzunaJobsMutation();
 
-  useEffect(()=>{
-   if(user){
-    setFormData(user)
-    setSkills(user?.skills || [])
-   }
-  },[user])
+  useEffect(() => {
+    if (user) {
+      setFormData(user);
+      setSkills(user?.skills || []);
+    }
+  }, [user]);
 
   // const sampleJobAdzunaParams = {
   //   query: "health worker",
@@ -86,8 +86,6 @@ const CreateProfile = () => {
   //   results_per_page: 50,
   //   page: 1,
   // };
-
-
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
@@ -98,7 +96,7 @@ const CreateProfile = () => {
       ...formData,
       skills,
     }),
-    [formData, skills] 
+    [formData, skills]
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -113,27 +111,31 @@ const CreateProfile = () => {
     });
   };
 
-  const onRefineBio =async () => {
-  setIsGeneratingBio(true);
-   await mutate(payload); //update profile
-   const response =  await mutateChat.mutateAsync({ message: boiPrompt(formData.bio) });
-   setIsGeneratingBio(false)
-   setFormData((prev) => ({
-    ...prev,
-    bio: response.reply,
-  }))
+  const onRefineBio = async () => {
+    setIsGeneratingBio(true);
+    await mutate(payload); //update profile
+    const response = await mutateChat.mutateAsync({
+      message: boiPrompt(formData.bio),
+    });
+    setIsGeneratingBio(false);
+    setFormData((prev) => ({
+      ...prev,
+      bio: response.reply,
+    }));
   };
 
-  const onRefineCareer =async () => {
+  const onRefineCareer = async () => {
     await mutate(payload); //update profile
     setIsGeneratingCareers(true);
-    const response =  await mutateChat.mutateAsync({ message: boiPrompt(formData.interests) });
+    const response = await mutateChat.mutateAsync({
+      message: boiPrompt(formData.interests),
+    });
     setIsGeneratingCareers(false);
     setFormData((prev) => ({
-     ...prev,
-     interests: response.reply,
-   }))
-   };
+      ...prev,
+      interests: response.reply,
+    }));
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -151,8 +153,8 @@ const CreateProfile = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="flex justify-center">
-                <Button
+                <div className="flex justify-end">
+                  <Button
                     disabled={!user?.bio}
                     onClick={() => navigate("/opportunities")}
                     className="bg-[var(--equipurple)]
@@ -491,16 +493,13 @@ const CreateProfile = () => {
                       <label key={item} className="flex items-center gap-2">
                         <input
                           type="checkbox"
-                          checked={formData?.devices?.includes(
-                            "I own a smartphone"
-                          )}
+                          className="cursor-pointer"
                           onChange={(e) => {
-                            const value = "I own a smartphone";
                             setFormData((prev) => ({
                               ...prev,
                               devices: e.target.checked
-                                ? [...(prev.devices || []), value]
-                                : prev?.devices?.filter((v) => v !== value),
+                                ? [...(prev.devices || []), item]
+                                : prev?.devices?.filter((v) => v !== item),
                             }));
                           }}
                         />
@@ -533,7 +532,11 @@ const CreateProfile = () => {
                     className="bg-[var(--equipurple)]
                     hover:bg-purple-600 cursor-pointer"
                   >
-                    {isPending ? "Creating profile..." : user?.bio? "Update Profile" : " Create Profile"}
+                    {isPending
+                      ? "Creating profile..."
+                      : user?.bio
+                      ? "Update Profile"
+                      : " Create Profile"}
                   </Button>
                   <Button
                     disabled={!user?.bio}
@@ -547,7 +550,8 @@ const CreateProfile = () => {
                   </Button>
                 </div>
                 <p className="text-gray-600 flex justify-center">
-                  Please complete your Bio, Education, and Skills sections, update profile before downloading your CV.
+                  Please complete your Bio, Education, and Skills sections,
+                  update profile before downloading your CV.
                 </p>
               </form>
             </CardContent>
@@ -561,20 +565,18 @@ const CreateProfile = () => {
 
 export default CreateProfile;
 
-
-export const boiPrompt = (text?:string)=>{
-  if(!text){
-    return "write a 150 words bio for me you can choose any profession of chioce, let your response be only what I can use directly without edits"
+export const boiPrompt = (text?: string) => {
+  if (!text) {
+    return "write a 150 words bio for me you can choose any profession of chioce, let your response be only what I can use directly without edits";
   }
 
-  return `Please help me refine this for my bio: ${text}, let your response be only what I can use directly, around 200 words`
-}
+  return `Please help me refine this for my bio: ${text}, let your response be only what I can use directly, around 200 words`;
+};
 
-
-export const careerPrompt = (text?:string)=>{
-  if(!text){
-    return "write a 200 words Career for me you can choose any profession of chioce, let your response be only what I can use directly without edits"
+export const careerPrompt = (text?: string) => {
+  if (!text) {
+    return "write a 200 words Career for me you can choose any profession of chioce, let your response be only what I can use directly without edits";
   }
 
-  return `Please help me refine this for my  Interests / Career Goals: ${text},  let your response be only what I can use directly, around  200 words`
-}
+  return `Please help me refine this for my  Interests / Career Goals: ${text},  let your response be only what I can use directly, around  200 words`;
+};
