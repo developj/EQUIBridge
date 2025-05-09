@@ -106,7 +106,6 @@ const CreateProfile = () => {
     mutate(payload, {
       onSuccess: () => {
         localStorage.removeItem("draftSkills");
-        navigate("/opportunities");
       },
       onError: (err) => {
         console.error("Profile update failed:", err);
@@ -251,6 +250,7 @@ const CreateProfile = () => {
                     </Label>
                     <Textarea
                       id="bio"
+                      required
                       placeholder="Tell us about your background, interests, or goals"
                       value={formData.bio}
                       rows={8}
@@ -511,13 +511,22 @@ const CreateProfile = () => {
                     Cancel
                   </Button>
                   <Button
+                    disabled={!user?.bio}
+                    onClick={() => navigate("/opportunities")}
+                    className="bg-[var(--equipurple)]
+                    hover:bg-purple-600 cursor-pointer"
+                  >
+                    Explore Opportunities
+                  </Button>
+                  <Button
                     type="submit"
                     className="bg-[var(--equipurple)]
                     hover:bg-purple-600 cursor-pointer"
                   >
-                    {isPending ? "Creating profile..." : " Create Profile"}
+                    {isPending ? "Creating profile..." : user?.bio? "Update Profile" : " Create Profile"}
                   </Button>
                   <Button
+                    disabled={!user?.bio}
                     onClick={async (e) => {
                       e.preventDefault();
                       await downloadResume();
@@ -528,7 +537,7 @@ const CreateProfile = () => {
                   </Button>
                 </div>
                 <p className="text-gray-600 flex justify-center">
-                  Please complete your Bio, Education, and Skills sections before downloading your CV.
+                  Please complete your Bio, Education, and Skills sections, update profile before downloading your CV.
                 </p>
               </form>
             </CardContent>
