@@ -18,11 +18,12 @@ import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
 import { useChat } from "../../api/hooks/useChat";
 import { downloadResume } from "../../api/api";
 import { useProfile } from "../../api/hooks/useProfile";
-import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
+// import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
 import { ExtendedProfileData } from "../../api/interface";
 
 const CreateProfile = () => {
   const { data: user, isLoading, isError } = useProfile();
+  console.log(isLoading,isError);
   const navigate = useNavigate();
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
@@ -68,7 +69,7 @@ const CreateProfile = () => {
     }
   };
   
-  const mutateAzuna = useAdzunaJobsMutation();
+  // const mutateAzuna = useAdzunaJobsMutation();
 
   useEffect(()=>{
    if(user){
@@ -77,12 +78,14 @@ const CreateProfile = () => {
    }
   },[user])
 
-  const sampleJobAdzunaParams = {
-    query: "health worker",
-    location: "usa",
-    results_per_page: 50,
-    page: 1,
-  };
+  // const sampleJobAdzunaParams = {
+  //   query: "health worker",
+  //   location: "usa",
+  //   results_per_page: 50,
+  //   page: 1,
+  // };
+
+
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
