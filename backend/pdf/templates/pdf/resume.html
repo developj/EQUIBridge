@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CV - {{ user_profile.user.get_full_name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0; /* Remove default body padding */
+      color: #1d1919;
+      background: #fff;
+      display: flex; /* Use flexbox for overall layout */
+      justify-content: center; /* Center the container horizontally */
+      align-items: start; /* Align items to the start of the container */
+    }
+
+    .container {
+      max-width: 900px;
+      width: 95%; /* Take up most of the viewport width with some margin */
+      margin: 10px 0; /* Add vertical margin, remove horizontal margin */
+      background: #fff;
+      border-radius: 12px; /* Slightly more rounded corners */
+      padding: 10px 20px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+      transition: all 0.3s ease; /* Smooth transition for hover effects */
+    }
+
+    .container:hover {
+      transform: translateY(-4px); /* Slight lift on hover */
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Increased shadow on hover */
+    }
+
+    .header {
+      background: #004080;
+      color: white;
+      padding: 15px 30px; /* Increased header padding */
+      border-radius: 12px 12px 8px 8px; /* Different radius for top and bottom */
+      text-align: center;
+      margin-bottom: 6px; /* Add margin below header */
+    }
+
+    .header h1 {
+      margin: 0 0 8px 0; /* Added margin below heading */
+      font-size: 32px; /* Larger heading */
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 16px; /* Increased font size */
+      color: #e0f7fa; /* Slightly lighter text */
+      font-weight: 300; /* Lighter font weight */
+    }
+
+    .section {
+      margin-top: 20px; /* Increased section margin */
+    }
+
+    .section h2 {
+      font-size: 24px; /* Larger heading */
+      margin-bottom: 10px; /* Increased margin */
+      color: #295ea9;
+      border-bottom: 2px solid #004080; /* Stronger border */
+      padding-bottom: 8px;
+      font-weight: 600; /* Make section titles bold */
+      letter-spacing: -0.02em;
+    }
+
+    .section p {
+      margin: 0 0 10px; /* Increased paragraph margin */
+      line-height: 1.7; /* Improved line height for readability */
+      color: #121111; /* Slightly darker text for body */
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 0 10px 0;
+    }
+
+    ul li::before {
+      content: '•';  /* Use a more modern bullet */
+      color: #004080; /* Bullet color */
+      margin-right: 10px;
+    }
+
+    li {
+      margin-bottom: 8px; /* Increased list item margin */
+      font-size: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e6f3ff;
+      color: #004080;
+      padding: 6px 12px; /* Slightly increased padding */
+      margin: 5px 8px 5px 0; /* Increased margin */
+      border-radius: 25px; /* More rounded badges */
+      font-size: 14px;
+      transition: all 0.2s ease; /* Smooth transition for hover */
+      border: 1px solid #e0f7fa;
+    }
+
+    .badge:hover {
+      background: #004080; /* Darker background on hover */
+      color: white;
+      transform: scale(1.05); /* Slight scale on hover */
+      border-color: #004080;
+    }
+
+    .no-data {
+      color: #888;
+      font-style: italic;
+      font-size: 16px; /* Increased font size for no-data message */
+    }
+
+    a {
+      color: #2178be; /* Standard link color */
+      text-decoration: none;
+      transition: color 0.2s ease; /* Smooth color transition */
+      font-weight: 500;
+    }
+
+    a:hover {
+      color: #003063; /* Darker color on hover */
+      text-decoration: underline; /* Underline on hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>{{ user_profile.user.get_full_name }}</h1>
+      <p>{{ user_profile.user.email }}</p>
+    </div>
+
+    {% if user_profile.bio %}
+    <div class="section">
+      <h2>Bio</h2>
+      <p>{{ user_profile.bio }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.skills %}
+    <div class="section">
+      <h2>Skills</h2>
+      {% for skill in user_profile.skills %}
+        <span class="badge">{{ skill }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if user_profile.experience %}
+    <div class="section">
+      <h2>Experience</h2>
+      <p>{{ user_profile.experience }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.linkedin %}
+    <div class="section">
+      <h2>LinkedIn</h2>
+      <p><a href="{{ user_profile.linkedin }}" target="_blank" rel="noopener noreferrer">{{ user_profile.linkedin }}</a></p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.interests %}
+    <div class="section">
+      <h2>Interests</h2>
+      <p>{{ user_profile.interests }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.preferred_industries %}
+    <div class="section">
+      <h2>Preferred Industries</h2>
+      <p>{{ user_profile.preferred_industries }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.education %}
+    <div class="section">
+      <h2>Education</h2>
+      <p>{{ user_profile.education }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.employment %}
+    <div class="section">
+      <h2>Employment</h2>
+      <p>{{ user_profile.employment }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.income %}
+    <div class="section">
+      <h2>Income</h2>
+      <p>{{ user_profile.income }}</p>
+    </div>
+    {% endif %}
+
+    {% if user_profile.is_single_parent or user_profile.has_disability or user_profile.accessibility_requirements %}
+    <div class="section">
+      <h2>Personal Circumstances</h2>
+      <ul>
+        {% if user_profile.is_single_parent %}
+        <li>Single Parent: <span style="font-weight: 600;">Yes</span></li>
+        {% endif %}
+        {% if user_profile.has_disability %}
+        <li>Has Disability: <span style="font-weight: 600;">Yes</span></li>
+        {% endif %}
+        {% if user_profile.accessibility_requirements %}
+        <li>Accessibility Requirements: <span style="font-weight: 600;">{{ user_profile.accessibility_requirements }}</span>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if user_profile.opportunity_preferences %}
+    <div class="section">
+      <h2>Opportunity Preferences</h2>
+      {% for item in user_profile.opportunity_preferences %}
+        <span class="badge">{{ item }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if user_profile.preferred_work_format %}
+    <div class="section">
+      <h2>Preferred Work Format</h2>
+      {% for item in user_profile.preferred_work_format %}
+        <span class="badge">{{ item }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if user_profile.languages %}
+    <div class="section">
+      <h2>Languages</h2>
+      <p>{{ user_profile.languages }}</p>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

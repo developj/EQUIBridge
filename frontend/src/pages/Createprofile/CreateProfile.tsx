@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import {
@@ -14,21 +14,25 @@ import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import Footer from "../../components/Footer";
 import { Textarea } from "../../components/ui/textarea";
-import { useAuth } from "../../api/hooks/useAuth";
 import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
+import { useChat } from "../../api/hooks/useChat";
+import { downloadResume } from "../../api/api";
+import { useProfile } from "../../api/hooks/useProfile";
 import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
+import { ExtendedProfileData } from "../../api/interface";
 
 const CreateProfile = () => {
-  const { user } = useAuth();
+  const { data: user, isLoading, isError } = useProfile();
   const navigate = useNavigate();
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
   const { mutate, isPending } = useUpdateProfile();
+  const mutateChat = useChat();
 
-  const [formData, setFormData] = useState({
-    first_name: user?.first_name || "",
-    last_name: user?.last_name || "",
-    email: user?.email || "",
+  const [formData, setFormData] = useState<ExtendedProfileData>({
+    first_name:  "",
+    last_name: "",
+    email: "",
     experience: "",
     linkedin: "",
     bio: "",
@@ -63,7 +67,15 @@ const CreateProfile = () => {
       setCurrentSkill("");
     }
   };
+  
   const mutateAzuna = useAdzunaJobsMutation();
+
+  useEffect(()=>{
+   if(user){
+    setFormData(user)
+    setSkills(user?.skills || [])
+   }
+  },[user])
 
   const sampleJobAdzunaParams = {
     query: "health worker",
@@ -76,15 +88,16 @@ const CreateProfile = () => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Profile submitted", skills);
-
-    const payload = {
+  const payload = useMemo(
+    () => ({
       ...formData,
       skills,
-    };
+    }),
+    [formData, skills] 
+  );
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     mutate(payload, {
       onSuccess: () => {
         localStorage.removeItem("draftSkills");
@@ -95,6 +108,24 @@ const CreateProfile = () => {
       },
     });
   };
+
+  const onRefineBio =async () => {
+   await mutate(payload); //update profile
+   const response =  await mutateChat.mutateAsync({ message: boiPrompt(formData.bio) });
+   setFormData((prev) => ({
+    ...prev,
+    bio: response.reply,
+  }))
+  };
+
+  const onRefineCareer =async () => {
+    await mutate(payload); //update profile
+    const response =  await mutateChat.mutateAsync({ message: boiPrompt(formData.interests) });
+    setFormData((prev) => ({
+     ...prev,
+     interests: response.reply,
+   }))
+   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -125,7 +156,7 @@ const CreateProfile = () => {
                       <Input
                         id="firstName"
                         required
-                        value={user?.first_name}
+                        value={formData?.first_name}
                         placeholder={user?.first_name}
                         onChange={(e) =>
                           setFormData((prev) => ({
@@ -142,7 +173,7 @@ const CreateProfile = () => {
                       <Input
                         id="lastName"
                         required
-                        value={user?.last_name}
+                        value={formData?.last_name}
                         placeholder={user?.last_name}
                         onChange={(e) =>
                           setFormData((prev) => ({
@@ -159,6 +190,7 @@ const CreateProfile = () => {
                       <Input
                         id="email"
                         type="email"
+                        disabled
                         required
                         value={user?.email}
                         placeholder={user?.email}
@@ -212,6 +244,7 @@ const CreateProfile = () => {
                       id="bio"
                       placeholder="Tell us about your background, interests, or goals"
                       value={formData.bio}
+                      rows={8}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
@@ -219,6 +252,19 @@ const CreateProfile = () => {
                         }))
                       }
                     />
+                    <div className="flex justify-end">
+                      <Button
+                        disabled={mutateChat.isPending}
+                        size={"sm"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onRefineBio();
+                        }}
+                        className="bg-[var(--equipurple)] mt-2 px-4 hover:bg-purple-600 text-white rounded-md cursor-pointer"
+                      >
+                        refine with ai
+                      </Button>
+                    </div>
                   </div>
                 </section>
 
@@ -263,11 +309,12 @@ const CreateProfile = () => {
                 </section>
 
                 {/* Interests / Career Goals */}
-                <section className="space-y-4">
-                  <h3 className="text-lg font-semibold ">
+                <section className="space-y-1">
+                  <h3 className="text-lg mb-2 font-semibold ">
                     Interests / Career Goals
                   </h3>
-                  <Input
+                  <Textarea
+                    className="min-h-16"
                     placeholder="e.g., Remote work, NGO work, Entrepreneurship"
                     value={formData.interests}
                     onChange={(e) =>
@@ -277,12 +324,27 @@ const CreateProfile = () => {
                       }))
                     }
                   />
-                  <Label htmlFor="preferredIndustries">
+                  <div className="flex justify-end">
+                    <Button
+                      disabled={mutateChat.isPending}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onRefineCareer();
+                      }}
+                      size={"sm"}
+                      className="bg-[var(--equipurple)] mt-1 px-4 hover:bg-purple-600 text-white rounded-md cursor-pointer"
+                    >
+                      refine with ai
+                    </Button>
+                  </div>
+
+                  <Label className="mb-2" htmlFor="preferredIndustries">
                     Preferred Industries (optional)
                   </Label>
                   <Input
                     id="preferredIndustries"
                     placeholder="e.g., tech, healthcare"
+                    value={formData?.preferred_industries}
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
@@ -372,6 +434,7 @@ const CreateProfile = () => {
                     </Label>
                     <Textarea
                       id="accessibilityRequirements"
+                      className="min-h-16"
                       placeholder="e.g., screen reader compatible"
                       value={formData.accessibility_requirements}
                       onChange={(e) =>
@@ -390,7 +453,7 @@ const CreateProfile = () => {
                   <Label htmlFor="languages">Languages Spoken</Label>
                   <Input
                     id="languages"
-                    placeholder="e.g., English, Yoruba, Hausa"
+                    placeholder="e.g., English, French, Spanich, Chinese"
                     value={formData.languages}
                     onChange={(e) =>
                       setFormData((prev) => ({
@@ -409,7 +472,7 @@ const CreateProfile = () => {
                       <label key={item} className="flex items-center gap-2">
                         <input
                           type="checkbox"
-                          checked={formData.devices.includes(
+                          checked={formData?.devices?.includes(
                             "I own a smartphone"
                           )}
                           onChange={(e) => {
@@ -417,8 +480,8 @@ const CreateProfile = () => {
                             setFormData((prev) => ({
                               ...prev,
                               devices: e.target.checked
-                                ? [...prev.devices, value]
-                                : prev.devices.filter((v) => v !== value),
+                                ? [...(prev.devices || []), value]
+                                : prev?.devices?.filter((v) => v !== value),
                             }));
                           }}
                         />
@@ -442,25 +505,26 @@ const CreateProfile = () => {
                     type="submit"
                     className="bg-[var(--equipurple)]
                     hover:bg-purple-600 cursor-pointer"
-                    onClick={handleSubmit}
                   >
                     {isPending ? "Creating profile..." : " Create Profile"}
                   </Button>
+                  <Button
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      await downloadResume();
+                    }}
+                    className="z-10 cursor-pointer" /* make sure it sits above the tooltip’s invisible area */
+                  >
+                    Download CV
+                  </Button>
                 </div>
+                <p className="text-gray-600 flex justify-center">
+                  Please complete your Bio, Education, and Skills sections before downloading your CV.
+                </p>
               </form>
             </CardContent>
           </Card>
         </div>
-        <Button
-          onClick={async () => {
-            const response = await mutateAzuna.mutateAsync(
-              sampleJobAdzunaParams
-            );
-            console.log(response);
-          }}
-        >
-          call adzuna test
-        </Button>
       </main>
       <Footer />
     </div>
@@ -468,3 +532,21 @@ const CreateProfile = () => {
 };
 
 export default CreateProfile;
+
+
+export const boiPrompt = (text?:string)=>{
+  if(!text){
+    return "write a 200 words bio for me you can choose any profession of chioce, let your response be only what I can use directly without edits"
+  }
+
+  return `Please help me refine this for my bio: ${text}, let your response be only what I can use directly, around 200 words`
+}
+
+
+export const careerPrompt = (text?:string)=>{
+  if(!text){
+    return "write a 200 words Career for me you can choose any profession of chioce, let your response be only what I can use directly without edits"
+  }
+
+  return `Please help me refine this for my  Interests / Career Goals: ${text},  let your response be only what I can use directly, around  200 words`
+}

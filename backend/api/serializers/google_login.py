@@ -1,12 +1,12 @@
-import base64
-import json
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from ..models.profile import Profile
-from ..serializers.user_serializer import UserProfileSerializer
+from django.utils.text import slugify
+from django.utils.crypto import get_random_string
+import base64
+import json
 
-User = get_user_model()
+from ..models import User, Profile
+from ..serializers.user_serializer import UserProfileSerializer
 
 
 def decode_jwt(jwt_token):
@@ -18,6 +18,7 @@ def decode_jwt(jwt_token):
 
     decoded_payload = base64url_decode(payload)
     return json.loads(decoded_payload)
+
 
 class GoogleTokenLoginSerializer(serializers.Serializer):
     access_token = serializers.CharField()
@@ -38,14 +39,23 @@ class GoogleTokenLoginSerializer(serializers.Serializer):
             first_name = payload.get('given_name', '')
             last_name = payload.get('family_name', '')
 
-            user, created = User.objects.get_or_create(email=email, defaults={
-                'username': email.split('@')[0],
-                'first_name': first_name,
-                'last_name': last_name,
-            })
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                base_username = slugify(email.split('@')[0])
+                username = base_username
+                while User.objects.filter(username=username).exists():
+                    username = f"{base_username}_{get_random_string(4)}"
 
-            if created:
+                user = User.objects.create(
+                    email=email,
+                    username=username,
+                    first_name=first_name,
+                    last_name=last_name
+                )
                 Profile.objects.create(user=user)
+
+            Profile.objects.get_or_create(user=user)
 
             refresh = RefreshToken.for_user(user)
 

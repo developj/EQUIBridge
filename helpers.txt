@@ -16,7 +16,7 @@ docker-compose up
 
 # After making installation changes, in the root folder healthyplace run
 
-docker-compose down --volumes
+docker-compose down --volumes 
 docker-compose up --build
 
 
@@ -44,5 +44,8 @@ docker-compose build backend
 docker-compose build frontend #whenever installations is made to the frontend and you want to build just frontend
 
 #test build
+
+# to remove all images
+docker-compose down --volumes --rmi all
 
 

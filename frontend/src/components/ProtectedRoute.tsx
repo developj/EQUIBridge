@@ -1,11 +1,11 @@
 import { JSX } from "react";
-import { useAuth } from "../api/hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useProfile } from "../api/hooks/useProfile";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { user, loading } = useAuth();
-  if (loading) return null;
+  const { data: user, isLoading } = useProfile();
+  if (isLoading) return null;
   if (!user) {
     toast.error("Unauthorized", {
       description: "Please login or register to access this page",

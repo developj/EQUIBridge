@@ -5,36 +5,38 @@ from ..models.profile import Profile
 User = get_user_model()
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    # Pull in profile fields
-    bio = serializers.CharField(source='profile.bio', required=False)
-    skills = serializers.ListField(source='profile.skills', required=False)
-    experience = serializers.CharField(source='profile.experience', required=False)
-    linkedin = serializers.CharField(source='profile.linkedin', required=False)
-    interests = serializers.CharField(source='profile.interests', required=False)
-    preferred_industries = serializers.CharField(source='profile.preferred_industries', required=False)
-    education = serializers.CharField(source='profile.education', required=False)
-    employment = serializers.CharField(source='profile.employment', required=False)
-    income = serializers.CharField(source='profile.income', required=False)
+    # Read-only email from User model
+    email = serializers.EmailField(read_only=True)
+
+    # Profile fields (optional)
+    bio = serializers.CharField(source='profile.bio', required=False, allow_blank=True, allow_null=True)
+    skills = serializers.ListField(source='profile.skills', required=False, allow_null=True)
+    experience = serializers.CharField(source='profile.experience', required=False, allow_blank=True, allow_null=True)
+    linkedin = serializers.CharField(source='profile.linkedin', required=False, allow_blank=True, allow_null=True)
+    interests = serializers.CharField(source='profile.interests', required=False, allow_blank=True, allow_null=True)
+    preferred_industries = serializers.CharField(source='profile.preferred_industries', required=False, allow_blank=True, allow_null=True)
+    education = serializers.CharField(source='profile.education', required=False, allow_blank=True, allow_null=True)
+    employment = serializers.CharField(source='profile.employment', required=False, allow_blank=True, allow_null=True)
     is_single_parent = serializers.BooleanField(source='profile.is_single_parent', required=False)
     has_disability = serializers.BooleanField(source='profile.has_disability', required=False)
-    accessibility_requirements = serializers.CharField(source='profile.accessibility_requirements', required=False)
-    opportunity_preferences = serializers.ListField(source='profile.opportunity_preferences', required=False)
-    preferred_work_format = serializers.ListField(source='profile.preferred_work_format', required=False)
-    languages = serializers.CharField(source='profile.languages', required=False)
-    devices = serializers.ListField(source='profile.devices', required=False)
+    accessibility_requirements = serializers.CharField(source='profile.accessibility_requirements', required=False, allow_blank=True, allow_null=True)
+    languages = serializers.CharField(source='profile.languages', required=False, allow_blank=True, allow_null=True)
+    devices = serializers.ListField(source='profile.devices', required=False, allow_null=True)
 
     class Meta:
         model = User
         fields = [
             'first_name', 'last_name', 'email',
             'bio', 'skills', 'experience', 'linkedin', 'interests',
-            'preferred_industries', 'education', 'employment', 'income',
+            'preferred_industries', 'education', 'employment',
             'is_single_parent', 'has_disability', 'accessibility_requirements',
-            'opportunity_preferences', 'preferred_work_format', 'languages', 'devices'
+            'languages', 'devices'
         ]
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', {})
+
+        # Email is read-only and will be excluded automatically
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

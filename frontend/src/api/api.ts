@@ -5,6 +5,8 @@ import {
   LoginUserType,
   RegisterUserType,
   JobAdzunaJobsQueryParams,
+  ChatRequest,
+  ChatResponse
 } from "./interface";
 
 export const API = axios.create({
@@ -52,3 +54,24 @@ export const logout = () => {
 
 export const getAdzunaJobs = (params: JobAdzunaJobsQueryParams) =>
   API.post("/adzuna/search/", params).then((res) => res.data);
+
+
+export const downloadResume = async () => {
+  const response = await API.get('/pdf/resume/', {
+    responseType: 'blob', // 👈 important to handle PDF binary data
+  });
+
+  const blob = new Blob([response.data], { type: 'application/pdf' });
+  const url = window.URL.createObjectURL(blob);
+
+  // Create a temporary link to trigger download
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'resume.pdf');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const sendChat = (data: ChatRequest): Promise<ChatResponse> =>
+  API.post<ChatResponse>("/text/chat/", data).then(res => res.data);

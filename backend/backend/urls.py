@@ -27,4 +27,5 @@ urlpatterns = [
     path("healthz/", health_check),
     path('admin/', admin.site.urls),
     path("api/", include("api.urls.auth_urls")),
+    path('api/pdf/', include('pdf.urls')),
 ]

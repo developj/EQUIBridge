@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
     # Local
     "api",
+    "pdf",
 ]
 
 SITE_ID = 1

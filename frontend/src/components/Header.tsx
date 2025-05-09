@@ -3,14 +3,13 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { SheetTrigger, Sheet, SheetContent } from "./ui/sheet";
 import { Menu } from "lucide-react";
-import { useAuth } from "../api/hooks/useAuth";
 import { logout } from "../api/api";
 import ProfileDropdown from "./ProfileDropdown";
+import { useProfile } from "../api/hooks/useProfile";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 const Header = () => {
-  const { user } = useAuth();
-  console.log("user", user);
+  const { data:user } =useProfile();
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 

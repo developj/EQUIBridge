@@ -8,13 +8,14 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "../components/ui/dropdown-menu";
+import { useProfile } from "../api/hooks/useProfile";
 import { ChevronDown } from "lucide-react";
 
 // import { Avatar } from "./ui/avatar";
 // import { Avatar } from "@/components/ui/avatar";
 
 export default function ProfileDropdown() {
-  const { user } = useAuth();
+  const { data:user } = useProfile();
   const navigate = useNavigate();
 
   return (
@@ -24,7 +25,7 @@ export default function ProfileDropdown() {
           <div className="rounded-full w-[40px] h-[40px] bg-[var(--equipurple)] flex items-center justify-center">
             {" "}
             <p className="text-white font-bold text-center flex items-center justify-center">
-              {user?.first_name.charAt(0)}
+              {user?.first_name?.charAt(0)}
             </p>
           </div>
           <p>{user?.email}</p>
