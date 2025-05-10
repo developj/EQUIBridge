@@ -6,7 +6,9 @@ import {
   RegisterUserType,
   JobAdzunaJobsQueryParams,
   ChatRequest,
-  ChatResponse
+  ChatResponse,
+  JobicyJobsQueryParams,
+  JobicyJobResponse,
 } from "./interface";
 
 export const API = axios.create({
@@ -27,6 +29,9 @@ API.interceptors.request.use((config) => {
 
   return config;
 });
+
+export const sendChat = (data: ChatRequest): Promise<ChatResponse> =>
+  API.post<ChatResponse>("/text/chat/", data).then(res => res.data);
 
 export const register = (data: RegisterUserType) =>
   API.post("/register/", data).then((res) => {
@@ -73,5 +78,6 @@ export const downloadResume = async () => {
   document.body.removeChild(link);
 };
 
-export const sendChat = (data: ChatRequest): Promise<ChatResponse> =>
-  API.post<ChatResponse>("/text/chat/", data).then(res => res.data);
+
+export const getJobicyJobs = (params: JobicyJobsQueryParams) =>
+  API.post<JobicyJobResponse>("/remote-jobs/", params).then(res => res.data)

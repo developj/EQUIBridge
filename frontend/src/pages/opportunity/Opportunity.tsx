@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { AdzunaJob } from "../../api/interface";
 import { useAuth } from "../../api/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { JobicyJobList } from "./jobicyJobs";
 
 const Opportunity = () => {
   const { user } = useAuth();
@@ -24,6 +25,7 @@ const Opportunity = () => {
   const [page, setPage] = useState<number>(1);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("health worker");
+  const [searchJobciJobs, setSearchJobciJobs] = useState<string>("");
   const mutateAzuna = useAdzunaJobsMutation();
   const navigate = useNavigate();
 
@@ -251,6 +253,9 @@ const Opportunity = () => {
               Next
             </Button>
           </div>
+        <div className="pt-8">
+         <JobicyJobList jobs={[]} />
+         </div>
         </div>
       </main>
       <Footer />

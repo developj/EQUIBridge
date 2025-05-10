@@ -94,3 +94,29 @@ export interface ChatRequest {
 export interface ChatResponse {
   reply: string;
 }
+export interface JobicyJobsQueryParams {
+  count?: number
+  geo?: string
+  industry?: string
+  tag?: string
+}
+export interface JobicyJob {
+  id: number
+  url: string
+  jobSlug: string
+  jobTitle: string
+  companyName: string
+  companyLogo: string
+  jobIndustry: string[]
+  jobType: string[]
+  jobGeo: string
+  jobLevel: string
+  jobExcerpt: string
+  jobDescription: string
+  pubDate: string
+  annualSalaryMin?: number
+  annualSalaryMax?: number
+  salaryCurrency?: string
+}
+
+export type JobicyJobResponse = JobicyJob[]
