@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { AdzunaJob } from "../../api/interface";
 import { useAuth } from "../../api/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { Badge } from "../../components/ui/badge";
 
 const Opportunity = () => {
   const { user } = useAuth();
@@ -26,6 +27,7 @@ const Opportunity = () => {
   const [searchQuery, setSearchQuery] = useState<string>("health worker");
   const mutateAzuna = useAdzunaJobsMutation();
   const navigate = useNavigate();
+
   const sampleJobAdzunaParams = {
     query: searchQuery,
     location: "usa",
@@ -58,6 +60,44 @@ const Opportunity = () => {
   const navigateToBack = () => {
     navigate("/");
   };
+
+  const jobs = [
+    {
+      id: 116770,
+      url: "https://jobicy.com/jobs/116770-front-end-engineer-3",
+      jobTitle: "Front End Engineer",
+      companyName: "Peerspace",
+      companyLogo:
+        "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2021/11/423c8cd867be08cf39987fcd193debe6.png",
+      jobIndustry: ["Software Engineering"],
+      jobType: ["full-time"],
+      jobGeo: "USA",
+      jobLevel: "Any",
+      jobExcerpt:
+        "As a Front-End Engineer, you will play a key role in shaping the user experience of our platform...",
+      annualSalaryMin: 130000,
+      annualSalaryMax: 150000,
+      salaryCurrency: "USD",
+    },
+    {
+      id: 9045,
+      url: "https://jobicy.com/jobs/9045-wordpress-developer-php-js",
+      jobTitle: "WordPress Developer",
+      companyName: "Awesome Motive",
+      companyLogo:
+        "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2022/01/b8e354b088bd65fd9f299af4f4bc1706.jpeg",
+      jobIndustry: ["Programming"],
+      jobType: ["full-time"],
+      jobGeo: "Anywhere",
+      jobLevel: "Any",
+      jobExcerpt:
+        "As a WordPress Developer, you’re responsible for Making Stuff Go. You will build infrastructure...",
+      annualSalaryMin: null,
+      annualSalaryMax: null,
+      salaryCurrency: "USD",
+    },
+    // ...add other jobs similarly
+  ];
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -121,7 +161,7 @@ const Opportunity = () => {
             </div>
           </div>
         </div>
-        <div className="px-12 py-6">
+        <div className=" px-4 md:px-12 py-6">
           {" "}
           <p className="pb-6 ">
             {`Hi ${user?.first_name} 👋 Based on your interests in  ${user?.interests} here
@@ -248,6 +288,63 @@ const Opportunity = () => {
             >
               Next
             </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-4">
+            {jobs.map((job) => (
+              <Card key={job.id} className="rounded-2xl shadow-md">
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={job.companyLogo}
+                      alt={job.companyName}
+                      width={48}
+                      height={48}
+                      className="rounded-md object-contain"
+                    />
+                    <div>
+                      <h2 className="text-lg font-semibold leading-tight">
+                        {job.jobTitle}
+                      </h2>
+                      <p className="text-muted-foreground text-sm">
+                        {job.companyName}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700 line-clamp-3">
+                    {job.jobExcerpt}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {job.jobIndustry.map((ind) => (
+                      <Badge key={ind} variant="outline">
+                        {ind}
+                      </Badge>
+                    ))}
+                    {job.jobType.map((type) => (
+                      <Badge key={type}>{type}</Badge>
+                    ))}
+                    <Badge variant="secondary">{job.jobGeo}</Badge>
+                  </div>
+                  {job.annualSalaryMin && (
+                    <p className="text-sm text-green-600 font-medium">
+                      ${job.annualSalaryMin.toLocaleString()} - $
+                      {job.annualSalaryMax.toLocaleString()}{" "}
+                      {job.salaryCurrency}
+                    </p>
+                  )}
+                  <div className="pt-2">
+                    <Button asChild>
+                      <a
+                        href={job.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Job
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </main>

@@ -551,7 +551,7 @@ const CreateProfile = () => {
                     disabled={!user?.bio}
                     onClick={() => navigate("/opportunities")}
                     className="bg-[var(--equipurple)]
-                    hover:bg-purple-600 cursor-pointer"
+                    hover:bg-purple-600 cursor-pointer hidden md:block"
                   >
                     Explore Opportunities
                   </Button>
