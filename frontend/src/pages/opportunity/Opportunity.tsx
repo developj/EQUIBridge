@@ -63,7 +63,7 @@ const Opportunity = () => {
 
 
   const handleFetchJobicyJobs =async (text?: string) => {
-    const chatResponse =await mutateChat?.mutateAsync({message: jobicyPrompt(text || searchQuery)});
+    const chatResponse =await mutateChat?.mutateAsync({message: jobicyPrompt(searchQuery || text)});
 
     const paramsJobicy = {
       tag: chatResponse?.reply,
