@@ -26,9 +26,11 @@
   - Tailwind CSS
   - CSS3
   - HTML5
+  - Docker
 
 - **Backend:**
   - Django
+  - Docker
 
 - **AI Integration:**
   - OpenAI
