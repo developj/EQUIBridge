@@ -7,6 +7,7 @@
 **EQUIBridge** is an innovative AI-powered platform dedicated to connecting women and marginalized communities to personalized job opportunities, scholarships, grants, and mentorship programs. Our mission is to address systemic barriers by leveraging inclusive technology tailored specifically to users' unique backgrounds, skills, and aspirations.
 
 ---
+<img width="1374" alt="Screenshot 2025-05-10 at 13 11 10" src="https://github.com/user-attachments/assets/9b0fdf9c-2808-4248-ad14-8f6ca8fed1f5" />
 
 ### Development Team
 
