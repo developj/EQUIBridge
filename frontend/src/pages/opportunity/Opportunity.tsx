@@ -16,15 +16,14 @@ import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
 import { useJobicyJobsMutation } from "../../api/hooks/useJobicy";
 import { useEffect, useState } from "react";
 import { AdzunaJob } from "../../api/interface";
-import { useAuth } from "../../api/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useChat } from "../../api/hooks/useChat";
 import { JobicyJobResponse } from "../../api/interface";
 import { JobicyJobList, jobicyPrompt } from "./jobicyJobs";
-
+import { useProfile } from "../../api/hooks/useProfile";
 
 const Opportunity = () => {
-  const { user } = useAuth();
+  const { data:user } = useProfile();
   const userInterestPhrase = user?.interest_search_phrase;
   const [opportunities, setOpportunities] = useState<AdzunaJob[]>([]);
   const [page, setPage] = useState<number>(1);
