@@ -14,7 +14,7 @@ const Hero = () => {
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
               Bridging the{" "}
-              <span className="text-[var(--equipurple)]">Opportuinity</span> Gap{" "}
+              <span className="text-[var(--equipurple)]">Opportunity</span> Gap{" "}
             </h1>
             <p className="text-lg text-foreground/80 mb-8 max-w-xl">
               EquiBridge is an AI-powered platform connecting women and
