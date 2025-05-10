@@ -241,6 +241,14 @@ const Opportunity = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
+                  <div className="flex pt-3">   
+              {opportunity.salary_min != null && opportunity.salary_max != null && (
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                  ${opportunity.salary_min.toLocaleString()}–$
+                  {opportunity.salary_max .toLocaleString()}
+                </span>
+              )}
+              </div>
                     <p className="text-gray-600 text-sm line-clamp-3">
                       {opportunity.description}
                     </p>
