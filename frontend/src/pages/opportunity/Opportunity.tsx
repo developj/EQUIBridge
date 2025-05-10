@@ -43,7 +43,7 @@ const Opportunity = () => {
     }
 
     const sampleJobAdzunaParams = {
-      query: query || user?.interest_search_phrase || "",
+      query:  searchQuery && searchQuery?.length > 0 && searchQuery?.split(" ")?.length <= 4? searchQuery: query || user?.interest_search_phrase || "",
       location: "usa",
       results_per_page: 20,
       page: 1,
