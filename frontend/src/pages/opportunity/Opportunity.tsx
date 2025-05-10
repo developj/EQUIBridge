@@ -137,7 +137,7 @@ const Opportunity = () => {
                 Find My Match
               </Button>
             </div>
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="flex-wrap gap-4 pt-4 hidden">
               {["Remote", "Disability-Friendly", "Flexible"].map((tag) => (
                 <label key={tag} className="flex items-center gap-2">
                   <input
@@ -302,5 +302,5 @@ export default Opportunity;
 
 export const adzunaPrompt = (text?: string) => {
   return `
-  respond with three words, that best describes this job search: '${text}'. Respond with just three words`;
+  respond with three words, that best describes this job search: '${text}'. Respond with just three words, example: frontend developer, nurse, medical doctor, dance artist, python javascript developer, nursing student etc. like they are search for job so the three words should makes not comma separated words`;
 };
