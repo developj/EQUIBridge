@@ -16,6 +16,7 @@ class Profile(models.Model):
     accessibility_requirements = models.TextField(blank=True, null=True)
     languages = models.CharField(max_length=255, blank=True, null=True)
     devices = models.JSONField(default=list, blank=True, null=True)
+    interest_search_phrase = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.email}'s Profile"

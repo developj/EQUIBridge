@@ -18,7 +18,6 @@ import { useUpdateProfile } from "../../api/hooks/useUpdateProfile";
 import { useChat } from "../../api/hooks/useChat";
 import { downloadResume } from "../../api/api";
 import { useProfile } from "../../api/hooks/useProfile";
-// import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
 import { ExtendedProfileData } from "../../api/interface";
 
 const CreateProfile = () => {
@@ -71,21 +70,12 @@ const CreateProfile = () => {
     }
   };
 
-  // const mutateAzuna = useAdzunaJobsMutation();
-
   useEffect(() => {
     if (user) {
       setFormData(user);
       setSkills(user?.skills || []);
     }
   }, [user]);
-
-  // const sampleJobAdzunaParams = {
-  //   query: "health worker",
-  //   location: "usa",
-  //   results_per_page: 50,
-  //   page: 1,
-  // };
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
@@ -99,9 +89,13 @@ const CreateProfile = () => {
     [formData, skills]
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(payload, {
+    const response = await mutateChat.mutateAsync({
+      message: interestPhrasePrompt(formData.interests,formData.bio,formData.skills),
+    });
+
+    mutate({...payload, interest_search_phrase: response.reply}, {
       onSuccess: () => {
         localStorage.removeItem("draftSkills");
       },
@@ -113,7 +107,6 @@ const CreateProfile = () => {
 
   const onRefineBio = async () => {
     setIsGeneratingBio(true);
-    await mutate(payload); //update profile
     const response = await mutateChat.mutateAsync({
       message: boiPrompt(formData.bio),
     });
@@ -125,7 +118,6 @@ const CreateProfile = () => {
   };
 
   const onRefineCareer = async () => {
-    await mutate(payload); //update profile
     setIsGeneratingCareers(true);
     const response = await mutateChat.mutateAsync({
       message: boiPrompt(formData.interests),
@@ -608,3 +600,8 @@ export const careerPrompt = (text?: string) => {
 
   return `Please help me refine this for my  Interests / Career Goals: ${text},  let your response be only what I can use directly, around  200 words`;
 };
+
+
+export const interestPhrasePrompt=(interest?: string, boi?:string, skills?: string[])=>{
+  return `three words that best describes this user: 'interests:${interest}, boi:${boi}, skills:${skills?.map(item=>item)}'. let your response be just the three words no extras. example: frontend developer, nurse, medical doctor, dance artist, python javascript developer, nursing student etc`;
+}

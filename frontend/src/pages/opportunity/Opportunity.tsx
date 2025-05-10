@@ -13,33 +13,65 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { useAdzunaJobsMutation } from "../../api/hooks/useAdzunaJobsMutation";
+import { useJobicyJobsMutation } from "../../api/hooks/useJobicy";
 import { useEffect, useState } from "react";
 import { AdzunaJob } from "../../api/interface";
 import { useAuth } from "../../api/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { JobicyJobList } from "./jobicyJobs";
+import { useChat } from "../../api/hooks/useChat";
+import { JobicyJobResponse } from "../../api/interface";
+import { JobicyJobList, jobicyPrompt } from "./jobicyJobs";
+
 
 const Opportunity = () => {
   const { user } = useAuth();
+  const userInterestPhrase = user?.interest_search_phrase;
   const [opportunities, setOpportunities] = useState<AdzunaJob[]>([]);
   const [page, setPage] = useState<number>(1);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>("health worker");
-  const [searchJobciJobs, setSearchJobciJobs] = useState<string>("");
-  const mutateAzuna = useAdzunaJobsMutation();
+  const [searchQuery, setSearchQuery] = useState<string>(user?.interest_search_phrase || "");
+  const [jobicyResult, setJobicyResult] = useState<JobicyJobResponse>([]);
+  const mutateAdzuna = useAdzunaJobsMutation();
+  const mutateJobicy = useJobicyJobsMutation();
   const navigate = useNavigate();
+  const  mutateChat= useChat()
 
-  const sampleJobAdzunaParams = {
-    query: searchQuery,
-    location: "usa",
-    results_per_page: 20,
-    page: 1,
-  };
+  const handleFetchJobs =async (text?:string) => {
+    let query = text;
+    if(!text){
+      const chatResponse =await mutateChat?.mutateAsync({message: adzunaPrompt(searchQuery)});
+      query = chatResponse?.reply
+    }
 
-  const handleFetchJobs = () => {
-    mutateAzuna.mutate(sampleJobAdzunaParams, {
+    const sampleJobAdzunaParams = {
+      query: query || user?.interest_search_phrase || "",
+      location: "usa",
+      results_per_page: 20,
+      page: 1,
+    };
+    mutateAdzuna.mutate(sampleJobAdzunaParams, {
       onSuccess: (data) => {
         setOpportunities(data || []);
+        console.log("Fetched jobs:", data);
+      },
+      onError: (err) => {
+        console.error("Error fetching jobs:", err);
+      },
+    });
+    handleFetchJobicyJobs(query);
+  };
+
+
+  const handleFetchJobicyJobs =async (text?: string) => {
+    const chatResponse =await mutateChat?.mutateAsync({message: jobicyPrompt(text || searchQuery)});
+
+    const paramsJobicy = {
+      tag: chatResponse?.reply,
+      count: 50,
+    };
+    mutateJobicy.mutate(paramsJobicy, {
+      onSuccess: (data) => {
+        setJobicyResult(data || []);
         console.log("Fetched jobs:", data);
       },
       onError: (err) => {
@@ -49,9 +81,11 @@ const Opportunity = () => {
   };
 
   useEffect(() => {
-    handleFetchJobs();
+    if(userInterestPhrase){
+      handleFetchJobs(userInterestPhrase);
+    }
     // fetch jobs on page load
-  }, [page]);
+  }, [userInterestPhrase]);
 
   const handleSearch = () => {
     setPage(1); // reset to first page when searching
@@ -254,7 +288,7 @@ const Opportunity = () => {
             </Button>
           </div>
         <div className="pt-8">
-         <JobicyJobList jobs={[]} />
+         <JobicyJobList jobs={jobicyResult} />
          </div>
         </div>
       </main>
@@ -264,3 +298,10 @@ const Opportunity = () => {
 };
 
 export default Opportunity;
+
+
+
+export const adzunaPrompt = (text?: string) => {
+  return `
+  respond with three words, that best describes this job search: '${text}'. Respond with just three words`;
+};

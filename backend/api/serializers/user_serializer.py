@@ -22,6 +22,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     accessibility_requirements = serializers.CharField(source='profile.accessibility_requirements', required=False, allow_blank=True, allow_null=True)
     languages = serializers.CharField(source='profile.languages', required=False, allow_blank=True, allow_null=True)
     devices = serializers.ListField(source='profile.devices', required=False, allow_null=True)
+    interest_search_phrase = serializers.CharField(source='profile.interest_search_phrase', required=False, allow_blank=True, allow_null=True)
+
 
     class Meta:
         model = User
@@ -30,7 +32,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'bio', 'skills', 'experience', 'linkedin', 'interests',
             'preferred_industries', 'education', 'employment',
             'is_single_parent', 'has_disability', 'accessibility_requirements',
-            'languages', 'devices'
+            'languages', 'devices', 'interest_search_phrase',
         ]
 
     def update(self, instance, validated_data):

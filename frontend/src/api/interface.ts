@@ -40,6 +40,7 @@ export interface ExtendedProfileData {
   opportunity_preferences?: string[];
   preferred_work_format?: string[];
   languages?: string;
+  interest_search_phrase?: string;
   devices?: string[];
 }
 
